@@ -1,4 +1,5 @@
 import 'package:strucreport/config/application.dart';
+import 'package:strucreport/model/photo_model.dart';
 
 class PreferenceHelper {
 
@@ -23,7 +24,8 @@ class PreferenceHelper {
   }
 
   static bool getBool(String key) {
-    return Application.preferences.getBool(key);
+    bool result = Application.preferences.getBool(key);
+    return result ?? false;
   }
 
   static Future<bool> setDouble(String key, double value) {
@@ -42,12 +44,23 @@ class PreferenceHelper {
     return Application.preferences.getInt(key);
   }
 
+  static Future<bool> setDate(String key, DateTime value) {
+    int timestamp = value.millisecondsSinceEpoch;
+    return Application.preferences.setInt(key, timestamp);
+  }
+
+  static DateTime getDate(String key) {
+    int timestamp = Application.preferences.getInt(key);
+    return timestamp != null ? DateTime.fromMillisecondsSinceEpoch(timestamp) : DateTime.now();
+  }
+
   static Future<bool> setString(String key, String value) {
     return Application.preferences.setString(key, value);
   }
 
   static String getString(String key) {
-    return Application.preferences.getString(key);
+    String result = Application.preferences.getString(key);
+    return result ?? "";
   }
 
   static Future<bool> setStringList(String key, List<String> value) {
@@ -56,6 +69,26 @@ class PreferenceHelper {
 
   static List<String> getStringList(String key) {
     return Application.preferences.getStringList(key);
+  }
+
+  static Future<bool> savePhotos(String key, List<PhotoModel> photos) {
+    if (photos == null || photos.isEmpty) {
+      return Application.preferences.setString(key, "");
+    } else {
+      String strPhoto = "";
+      for (int i = 0; i < photos.length; i++) {
+        strPhoto += photos[i].toString();
+        if (i < photos.length - 1) strPhoto += Application.photoDelimiter;
+      }
+      return Application.preferences.setString(key, strPhoto);
+    }
+  }
+
+  static List<PhotoModel> getPhotos(String key) {
+    String strPhotoList = Application.preferences.getString(key);
+    if (strPhotoList == null || strPhotoList.isEmpty) return [];
+    List<String> photoItems = strPhotoList.split(Application.photoDelimiter);
+    return photoItems.map((e) => PhotoModel.fromString(e)).toList();
   }
 
   ///Singleton factory

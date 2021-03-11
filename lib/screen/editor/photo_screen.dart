@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:strucreport/bloc/bloc.dart';
 import 'package:strucreport/config/application.dart';
+import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/image_picker/image_picker_handler.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
 import 'package:strucreport/model/photo_model.dart';
 import 'package:strucreport/model/report_model.dart';
+import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/widget/label_widget.dart';
 import 'package:strucreport/widget/material_circle_button.dart';
 import 'package:strucreport/widget/photo_edit_dialog.dart';
@@ -29,8 +31,7 @@ class _PhotoScreenState extends State<PhotoScreen>
   void initState() {
     super.initState();
     bloc = BlocProvider.of<EditorBloc>(context);
-    EditorPhotoState state = bloc.state;
-    photos = state.report.photos ?? [];
+    photos = PreferenceHelper.getPhotos(Params.photos);
     _imgPickerAnimationController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 500),
@@ -251,6 +252,7 @@ class _PhotoScreenState extends State<PhotoScreen>
                           onOK: (value) {
                             setState(() {
                               photos[photos.indexOf(item)] = value;
+                              PreferenceHelper.savePhotos(Params.photos, photos);
                             });
                           },
                         );
@@ -262,7 +264,8 @@ class _PhotoScreenState extends State<PhotoScreen>
                 onTap: () {
                   setState(() {
                     photos.remove(item);
-                  });
+                    PreferenceHelper.savePhotos(Params.photos, photos);
+                  },);
                 },
                 icon: Icon(Icons.delete_forever, color: Colors.yellow, size: 28,),),
             ],
@@ -284,6 +287,7 @@ class _PhotoScreenState extends State<PhotoScreen>
           onOK: (value) {
             setState(() {
               photos.add(value);
+              PreferenceHelper.savePhotos(Params.photos, photos);
             });
           },
         );

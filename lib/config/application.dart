@@ -4,6 +4,9 @@ class Application {
   static SharedPreferences preferences;
   static double IconSize = 64;
 
+  static String photoDelimiter = "^*__*^";
+  static String photoElementDelimiter = "#*__*#";
+
   static List<String> Emails = [
     "robert.simplify@gmail.com",
 
@@ -33,7 +36,8 @@ class Application {
     "Vendor",
     "Buyer",
     "Agent",
-    "Occupier"
+    "Occupier",
+    "Other"
   ];
 
   static List<String> ExternalWallsConstruction = [
@@ -43,7 +47,8 @@ class Application {
 
   static List<String> CoverOfRoor = [
     "Tiles",
-    "Slates"
+    "Slates",
+    "Other"
   ];
 
   static List<String> NumberOfRooms = [
