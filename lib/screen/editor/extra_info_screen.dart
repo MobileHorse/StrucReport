@@ -4,15 +4,10 @@ import 'package:strucreport/bloc/bloc.dart';
 import 'package:strucreport/config/application.dart';
 import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
-import 'package:strucreport/model/report_model.dart';
 import 'package:strucreport/widget/app_comment_widget.dart';
 import 'package:strucreport/widget/app_dropdown_comment_widget.dart';
 import 'package:strucreport/widget/app_switch_comment_widget.dart';
 import 'package:strucreport/widget/app_switch_widget.dart';
-import 'package:strucreport/widget/dropdown_widget.dart';
-import 'package:strucreport/widget/label_widget.dart';
-import 'package:strucreport/widget/switch_widget.dart';
-import 'package:strucreport/widget/text_field_multiline_widget.dart';
 
 class ExtraInfoScreen extends StatefulWidget {
   @override
@@ -211,16 +206,10 @@ class _ExtraInfoScreenState extends State<ExtraInfoScreen> {
   }
 
   void gotoNext() {
-    bloc.add(EditorExtraNextEvent(report: updateReport()));
+    bloc.add(EditorExtraNextEvent());
   }
 
   void gotoPrev() {
-    bloc.add(EditorPrevEvent(report: updateReport()));
-  }
-
-  ReportModel updateReport() {
-    EditorExtraState state = bloc.state;
-    ReportModel report = state.report;
-    return report;
+    bloc.add(EditorPrevEvent());
   }
 }

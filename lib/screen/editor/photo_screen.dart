@@ -8,7 +8,6 @@ import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/image_picker/image_picker_handler.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
 import 'package:strucreport/model/photo_model.dart';
-import 'package:strucreport/model/report_model.dart';
 import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/widget/label_widget.dart';
 import 'package:strucreport/widget/material_circle_button.dart';
@@ -94,10 +93,7 @@ class _PhotoScreenState extends State<PhotoScreen>
           children: [
             NeumorphicButton(
               onPressed: () {
-                EditorPhotoState state = bloc.state;
-                ReportModel report = state.report;
-                report.photos = photos;
-                bloc.add(EditorPrevEvent(report: report));
+                bloc.add(EditorPrevEvent());
               },
               style: NeumorphicStyle(
                   boxShape: NeumorphicBoxShape.circle(),
@@ -113,10 +109,7 @@ class _PhotoScreenState extends State<PhotoScreen>
             ),
             NeumorphicButton(
               onPressed: () {
-                EditorPhotoState state = bloc.state;
-                ReportModel report = state.report;
-                report.photos = photos;
-                bloc.add(EditorPhotoNextEvent(report: report));
+                bloc.add(EditorPhotoNextEvent());
               },
               style: NeumorphicStyle(
                   boxShape: NeumorphicBoxShape.circle(),

@@ -4,14 +4,12 @@ import 'package:strucreport/bloc/bloc.dart';
 import 'package:strucreport/config/application.dart';
 import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
-import 'package:strucreport/model/report_model.dart';
+import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/widget/app_comment_widget.dart';
 import 'package:strucreport/widget/app_date_picker.dart';
 import 'package:strucreport/widget/app_dropdown.dart';
 import 'package:strucreport/widget/app_switch_widget.dart';
-import 'package:strucreport/widget/label_widget.dart';
 import 'package:strucreport/widget/single_line_input.dart';
-import 'package:strucreport/widget/text_content_widget.dart';
 
 class GeneralInfoScreen extends StatefulWidget {
   @override
@@ -26,9 +24,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   void initState() {
     super.initState();
     bloc = BlocProvider.of<EditorBloc>(context);
-    EditorGeneralInfoState state = bloc.state;
-    ReportModel report = state.report;
-    _anyChimneyStacks = report.anyChimneyStacks;
+    _anyChimneyStacks = PreferenceHelper.getBool(Params.anyChimneyStacks);
   }
 
   @override
@@ -81,6 +77,10 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                         ),
                         AppCommentWidget(
                           prefKey: Params.inspectionTypeComment,
+                        ),
+                        AppCommentWidget(
+                          label: "Client's Brief: ",
+                          prefKey: Params.clientBrief,
                         ),
                         AppDropdownWidget(
                           label: "Type of property: ",
@@ -212,8 +212,6 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   }
 
   void gotoNext() {
-    EditorGeneralInfoState state = bloc.state;
-    ReportModel report = state.report;
-    bloc.add(EditorGeneralNextEvent(report: report));
+    bloc.add(EditorGeneralNextEvent());
   }
 }

@@ -7,6 +7,7 @@ class Params {
   static final String inspectedDate = "inspectedDate";
   static final String inspectionType = "inspectionType";
   static final String inspectionTypeComment = "inspectionTypeComment";
+  static final String clientBrief = "clientBrief";
   static final String propertyType = "propertyType";
   static final String propertyTypeComment = "propertyTypeComment";
   static final String presentAtSite = "presentAtSite";

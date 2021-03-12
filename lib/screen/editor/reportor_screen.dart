@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:strucreport/bloc/bloc.dart';
 import 'package:strucreport/config/application.dart';
+import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
-import 'package:strucreport/model/report_model.dart';
-import 'package:strucreport/util/color_utils.dart';
+import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/widget/dropdown_widget.dart';
 import 'package:strucreport/widget/label_widget.dart';
 import 'package:strucreport/widget/text_content_widget.dart';
-import 'package:strucreport/widget/text_field.dart';
 
 class ReporterScreen extends StatefulWidget {
   @override
@@ -25,14 +24,14 @@ class _ReporterScreenState extends State<ReporterScreen> {
   void initState() {
     super.initState();
     bloc = BlocProvider.of<EditorBloc>(context);
-    EditorReporterState state = bloc.state;
-    ReportModel report = state.report;
-    _preparedBy = report.preparedBy;
-    _preparedDate = report.preparedDate ?? DateTime.now();
-    _checkedBy = report.checkedBy;
-    _checkedDate = report.checkedDate ?? DateTime.now();
-    _approvedBy = report.approvedBy;
-    _approvedDate = report.approvedDate ?? DateTime.now();
+    String inspectedBy = PreferenceHelper.getString(Params.inspectedBy);
+    DateTime inspectedDate = PreferenceHelper.getDate(Params.inspectedDate);
+    _preparedBy = inspectedBy;
+    _preparedDate = inspectedDate;
+    _checkedBy = inspectedBy;
+    _checkedDate = inspectedDate;
+    _approvedBy = inspectedBy;
+    _approvedDate = inspectedDate;
   }
 
   @override
@@ -192,7 +191,7 @@ class _ReporterScreenState extends State<ReporterScreen> {
           children: [
             NeumorphicButton(
               onPressed: () {
-                bloc.add(EditorPrevEvent(report: getUpdatedReport()));
+                bloc.add(EditorPrevEvent());
                 },
               style: NeumorphicStyle(
                   boxShape: NeumorphicBoxShape.circle(),
@@ -203,7 +202,7 @@ class _ReporterScreenState extends State<ReporterScreen> {
             SizedBox(width: 60,),
             NeumorphicButton(
               onPressed: () {
-                bloc.add(EditorReporterNextEvent(report: getUpdatedReport()));
+                bloc.add(EditorReporterNextEvent());
               },
               style: NeumorphicStyle(
                   boxShape: NeumorphicBoxShape.circle(),
@@ -278,15 +277,4 @@ class _ReporterScreenState extends State<ReporterScreen> {
       });
   }
 
-  ReportModel getUpdatedReport() {
-    EditorReporterState state = bloc.state;
-    ReportModel report = state.report;
-    report.preparedBy = _preparedBy;
-    report.preparedDate = _preparedDate;
-    report.checkedBy = _checkedBy;
-    report.checkedDate = _checkedDate;
-    report.approvedBy = _approvedBy;
-    report.approvedDate = _approvedDate;
-    return report;
-  }
 }
