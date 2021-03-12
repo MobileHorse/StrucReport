@@ -14,6 +14,7 @@ import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
 import 'package:strucreport/model/photo_model.dart';
 import 'package:strucreport/util/color_utils.dart';
+import 'package:strucreport/util/file_utils.dart';
 import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/util/string_utils.dart';
 import 'package:strucreport/widget/loading_dialog.dart';
@@ -91,7 +92,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         SizedBox(
                           height: 80,
                         ),
-                        NeumorphicButton(
+                        /*NeumorphicButton(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 35, vertical: 20),
                           onPressed: () async {
@@ -116,7 +117,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                               )
                             ],
                           ),
-                        )
+                        )*/
                       ],
                     ),
                   ),
@@ -689,37 +690,39 @@ class _PreviewScreenState extends State<PreviewScreen> {
     //Save and dispose the document.
     final List<int> bytes = document.save();
     document.dispose();
-    final Directory directory = await getExternalStorageDirectory();
+    final String projectNumber = PreferenceHelper.getString(Params.projectNumber);
+    final Directory directory = await FileUtils.getProjectDirectory(projectNumber);
     final String path = directory.path;
-    final File file = File('$path/checklist.pdf');
+    String formattedDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
+    String filename = "$projectNumber-Checklist-$formattedDate.pdf";
+    final File file = File('$path/$filename');
     await file.writeAsBytes(bytes, flush: true);
     print("========================= PDF created ======================");
-    print('$path/checklist.pdf');
+    print('$path/$filename');
 
     //// Email Send
     final Email email = Email(
       body: "StrucReport",
       subject: "New checklist created",
       recipients: Application.Emails,
-      attachmentPaths: ['$path/checklist.pdf'],
+      attachmentPaths: ['$path/$filename'],
       isHTML: false,
     );
 
     String platformResponse;
 
-    try {
+    /*try {
       await FlutterEmailSender.send(email);
       platformResponse = 'success';
     } catch (error) {
       platformResponse = error.toString();
     }
     print("========= Send Email ===============");
-    print(platformResponse);
+    print(platformResponse);*/
   }
 
   Future<void> generateReport() async {
     LoadingDialog.showLoadingDialog(context, _keyLoader);
-    EditorPreviewState state = bloc.state;
     //Create a new PDF document
     final PdfDocument document = PdfDocument();
     PdfPageSettings pageSettings = PdfPageSettings(PdfPageSize.a4);
@@ -1452,7 +1455,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
   }
 
   Future<PdfPageTemplateElement> generateHeader(PdfPage contentPage, {bool isPdf = false}) async {
-    EditorPreviewState state = bloc.state;
     PdfBorders noBorder = PdfBorders(
         left: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
         top: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
@@ -1553,7 +1555,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     PdfGridRow row33 = grid3.rows.add();
     row33.cells[0].style = PdfGridCellStyle(borders: noBorder);
     row33.cells[0].value = generateCell(
-        "Date::", DateFormat('dd/MM/yyyy').format(getDate(Params.inspectedBy)));
+        "Date::", DateFormat('dd/MM/yyyy').format(getDate(Params.inspectedDate)));
 
     row1.cells[2].value = grid3;
     if (!isPdf) {

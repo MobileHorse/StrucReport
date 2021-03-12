@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:simple_permissions/simple_permissions.dart';
 import 'package:strucreport/config/routes.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
+import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/util/toasts.dart';
+import 'package:strucreport/widget/confirm_dialog.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -121,7 +123,32 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(height: 120,),
               NeumorphicButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routes.editor);
+                  if (PreferenceHelper.getKeys() == null || PreferenceHelper.getKeys().isEmpty) {
+                    Navigator.pushNamed(context, Routes.editor);
+                  } else {
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) {
+                        return ConfirmDialog(
+                          message: "Do you want to continue from drafts?",
+                          btnYes: "Yes, continue drafts",
+                          btnNo: "No, start scratch",
+                          btnCancel: "Cancel",
+                          onYes: () {
+                            Navigator.pushNamed(context, Routes.editor);
+                          },
+                          onNo: () async {
+                            await PreferenceHelper.clear();
+                            Navigator.pushNamed(context, Routes.editor);
+                          },
+                          onCancel: () {
+
+                          },
+                        );
+                      },
+                    );
+                  }
                 },
                 style: NeumorphicStyle(
                   surfaceIntensity: 0.15,

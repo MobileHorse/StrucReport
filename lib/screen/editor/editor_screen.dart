@@ -114,7 +114,7 @@ class _EditorScreenState extends State<EditorScreen> {
                 } else if (state is EditorExtraState) {
                   title = "Extra Info";
                 } else if (state is EditorReporterState) {
-                  title = "Reporter";
+                  title = "Inspector";
                 } else if (state is EditorPreviewState) {
                   title = "Send";
                 } else {
