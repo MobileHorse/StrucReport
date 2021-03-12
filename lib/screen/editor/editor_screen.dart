@@ -7,7 +7,6 @@ import 'package:strucreport/screen/editor/general_info_screen.dart';
 import 'package:strucreport/screen/editor/photo_screen.dart';
 import 'package:strucreport/screen/editor/preview_screen.dart';
 import 'package:strucreport/screen/editor/reportor_screen.dart';
-import 'package:strucreport/util/color_utils.dart';
 
 class EditorScreen extends StatefulWidget {
   @override
@@ -45,7 +44,6 @@ class _EditorScreenState extends State<EditorScreen> {
               }
             },
             child: Scaffold(
-              resizeToAvoidBottomInset: false,
               body: SafeArea(
                 child: NeumorphicBackground(
                   child: Column(

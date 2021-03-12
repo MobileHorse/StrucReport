@@ -9,9 +9,11 @@ import 'package:strucreport/library/image_picker/image_picker_handler.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
 import 'package:strucreport/model/photo_model.dart';
 import 'package:strucreport/util/preference_helper.dart';
+import 'package:strucreport/util/file_utils.dart';
 import 'package:strucreport/widget/label_widget.dart';
 import 'package:strucreport/widget/material_circle_button.dart';
 import 'package:strucreport/widget/photo_edit_dialog.dart';
+import 'package:path/path.dart' as Path;
 
 class PhotoScreen extends StatefulWidget {
   @override
@@ -70,11 +72,13 @@ class _PhotoScreenState extends State<PhotoScreen>
                           primary: false,
                           shrinkWrap: true,
                           itemCount: Application.PhotoCategories.length,
-                          separatorBuilder: (context, index) => SizedBox(
-                            height: 20,
-                          ),
-                          itemBuilder: (context, index) => buildPhotoCategory(
-                              Application.PhotoCategories[index]),
+                          separatorBuilder: (context, index) =>
+                              SizedBox(
+                                height: 20,
+                              ),
+                          itemBuilder: (context, index) =>
+                              buildPhotoCategory(
+                                  Application.PhotoCategories[index]),
                         )
                       ],
                     ),
@@ -131,9 +135,9 @@ class _PhotoScreenState extends State<PhotoScreen>
 
   Widget buildPhotoCategory(String category) {
     List<PhotoModel> categoryPhotos =
-        photos.where((element) {
-          return element.category == category;
-        }).toList();
+    photos.where((element) {
+      return element.category == category;
+    }).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -169,18 +173,18 @@ class _PhotoScreenState extends State<PhotoScreen>
         ),
         categoryPhotos.length > 0
             ? SizedBox(
-                height: 300,
-                child: ListView.separated(
-                  primary: false,
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  itemCount: categoryPhotos.length,
-                  itemBuilder: (context, index) =>
-                      buildPhotoItem(categoryPhotos[index]),
-                  separatorBuilder: (context, index) => SizedBox(width: 20,),
-                ),
-              )
+          height: 300,
+          child: ListView.separated(
+            primary: false,
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemCount: categoryPhotos.length,
+            itemBuilder: (context, index) =>
+                buildPhotoItem(categoryPhotos[index]),
+            separatorBuilder: (context, index) => SizedBox(width: 20,),
+          ),
+        )
             : Container()
       ],
     );
@@ -232,32 +236,33 @@ class _PhotoScreenState extends State<PhotoScreen>
           child: Row(
             children: [
               MaterialCircleButton(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) {
-                        return PhotoEditDialog(
-                          photo: item.image,
-                          category: item.category,
-                          inReport: item.inReport,
-                          caption: item.caption,
-                          onOK: (value) {
-                            setState(() {
-                              photos[photos.indexOf(item)] = value;
-                              PreferenceHelper.savePhotos(Params.photos, photos);
-                            });
-                          },
-                        );
-                      },
-                    );
-                  },
-                  icon: Icon(Icons.settings, color: Colors.yellow, size: 28,),),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return PhotoEditDialog(
+                        photo: item.image,
+                        category: item.category,
+                        inReport: item.inReport,
+                        caption: item.caption,
+                        onOK: (value) {
+                          setState(() {
+                            photos[photos.indexOf(item)] = value;
+                            PreferenceHelper.savePhotos(Params.photos, photos);
+                          });
+                        },
+                      );
+                    },
+                  );
+                },
+                icon: Icon(Icons.settings, color: Colors.yellow, size: 28,),),
               MaterialCircleButton(
                 onTap: () {
                   setState(() {
                     photos.remove(item);
                     PreferenceHelper.savePhotos(Params.photos, photos);
+                    deletePhoto(item);
                   },);
                 },
                 icon: Icon(Icons.delete_forever, color: Colors.yellow, size: 28,),),
@@ -277,14 +282,28 @@ class _PhotoScreenState extends State<PhotoScreen>
         return PhotoEditDialog(
           photo: _image,
           category: _selectedCategory,
-          onOK: (value) {
+          onOK: (value) async {
+            PhotoModel newPhoto = await savePhotoInDirectory(value);
             setState(() {
-              photos.add(value);
+              photos.add(newPhoto);
               PreferenceHelper.savePhotos(Params.photos, photos);
             });
           },
         );
       },
     );
+  }
+
+  Future<PhotoModel> savePhotoInDirectory(PhotoModel photoModel) async {
+    int stamp = DateTime.now().millisecondsSinceEpoch;
+    String dest = (await FileUtils.getProjectImageDirectory(PreferenceHelper.getString(Params.projectNumber))).path + '/${PreferenceHelper.getString(Params.projectNumber)}-Photo-' + stamp.toString() + Path.extension(photoModel.image.path);
+    File destFile = await File(dest).create();
+    await photoModel.image.copy(destFile.path);
+    photoModel.image = File(dest);
+    return photoModel;
+  }
+
+  void deletePhoto(PhotoModel photoModel) {
+    photoModel.image.delete(recursive: true);
   }
 }

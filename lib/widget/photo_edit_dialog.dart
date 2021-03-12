@@ -15,9 +15,9 @@ class PhotoEditDialog extends StatefulWidget {
   final String category;
   final ValueSetter<PhotoModel> onOK;
   final bool inReport;
-  final String caption;
+  final String caption, comment;
 
-  PhotoEditDialog({this.photo, this.onOK, this.category, this.inReport, this.caption});
+  PhotoEditDialog({this.photo, this.onOK, this.category, this.inReport, this.caption, this.comment = ""});
 
   @override
   _PhotoEditDialogState createState() => _PhotoEditDialogState();
@@ -27,12 +27,21 @@ class _PhotoEditDialogState extends State<PhotoEditDialog> {
 
   bool inReport;
   String caption;
+  TextEditingController commentController;
 
   @override
   void initState() {
     super.initState();
+    commentController = TextEditingController();
+    commentController.text = widget.comment;
     inReport = widget.inReport ?? false;
     caption = widget.caption == null || widget.caption.isEmpty ? Application.PhotoCaptions[0] : widget.caption;
+  }
+
+  @override
+  void dispose() {
+    commentController.dispose();
+    super.dispose();
   }
 
   @override
@@ -73,6 +82,25 @@ class _PhotoEditDialogState extends State<PhotoEditDialog> {
               },
             ),
           ),
+          SizedBox(height: 20,),
+          Neumorphic(
+            style: NeumorphicStyle(
+              depth: NeumorphicTheme.embossDepth(context),
+              boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            child: TextField(
+              controller: commentController,
+              onChanged: (value) async {
+              },
+              style: TextStyle(
+                  fontSize: 20,
+                  color: ColorUtils.textColorByTheme(context)
+              ),
+              maxLines: 3,
+              decoration: InputDecoration.collapsed(hintText: "Comment", hintStyle: TextStyle(fontSize: 20, color: NeumorphicTheme.defaultTextColor(context))),
+            ),
+          ),
           SizedBox(height: 30,),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -80,7 +108,7 @@ class _PhotoEditDialogState extends State<PhotoEditDialog> {
               NeumorphicButton(
                 onPressed: () {
                   Navigator.pop(context);
-                  PhotoModel model = PhotoModel(image: widget.photo, category: widget.category, inReport: inReport, caption: caption);
+                  PhotoModel model = PhotoModel(image: widget.photo, category: widget.category, inReport: inReport, caption: caption, comment: commentController.text);
                   widget.onOK(model);
                 },
                 child: Text("OK", style: TextStyle(color: ColorUtils.textColorByTheme(context), fontSize: 20),),

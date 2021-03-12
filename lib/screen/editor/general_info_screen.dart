@@ -5,6 +5,7 @@ import 'package:strucreport/config/application.dart';
 import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
 import 'package:strucreport/util/preference_helper.dart';
+import 'package:strucreport/util/toasts.dart';
 import 'package:strucreport/widget/app_comment_widget.dart';
 import 'package:strucreport/widget/app_date_picker.dart';
 import 'package:strucreport/widget/app_dropdown.dart';
@@ -212,6 +213,10 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   }
 
   void gotoNext() {
-    bloc.add(EditorGeneralNextEvent());
+    if (PreferenceHelper.getString(Params.projectNumber).isEmpty) {
+      ToastUtils.showErrorToast(context, "Project number is required");
+    } else {
+      bloc.add(EditorGeneralNextEvent());
+    }
   }
 }

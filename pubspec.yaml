@@ -26,6 +26,9 @@ dependencies:
   flutter_email_sender: ^4.0.0
   aspose_words_cloud: 20.11.0
   dio: ^3.0.10
+  simple_permissions:
+    git:
+      url: https://github.com/tq-systems/simple_permissions.git
 
 dev_dependencies:
   flutter_test:

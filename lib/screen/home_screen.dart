@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:simple_permissions/simple_permissions.dart';
 import 'package:strucreport/config/routes.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
+import 'package:strucreport/util/toasts.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -8,6 +11,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+    checkPermission();
+  }
+
+  checkPermission() async {
+    bool checkResult =
+    await SimplePermissions.checkPermission(Permission.WriteExternalStorage);
+    if (!checkResult) {
+      var status = await SimplePermissions.requestPermission(
+          Permission.WriteExternalStorage);
+      if (status == PermissionStatus.authorized) {
+      } else {
+        ToastUtils.showErrorToast(context, "You must enable permission");
+        SystemNavigator.pop();
+      }
+    } else {
+    }
+  }
+
   Widget _letter(String letter) {
     return Text(letter,
         style: TextStyle(
