@@ -92,7 +92,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         SizedBox(
                           height: 80,
                         ),
-                        /*NeumorphicButton(
+                        NeumorphicButton(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 35, vertical: 20),
                           onPressed: () async {
@@ -117,7 +117,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                               )
                             ],
                           ),
-                        )*/
+                        )
                       ],
                     ),
                   ),
@@ -724,14 +724,14 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     String platformResponse;
 
-    /*try {
+    try {
       await FlutterEmailSender.send(email);
       platformResponse = 'success';
     } catch (error) {
       platformResponse = error.toString();
     }
     print("========= Send Email ===============");
-    print(platformResponse);*/
+    print(platformResponse);
   }
 
   Future<void> generateReport() async {
