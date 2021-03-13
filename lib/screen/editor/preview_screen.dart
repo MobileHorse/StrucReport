@@ -219,7 +219,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
         top: result.bounds.bottom + 10);
 
     result = writeChecklistRegularParagraph(
-        text: "Type of inspection: ${PreferenceHelper.getString(Params.inspectionType)}",
+        text: "Inspection type: ${PreferenceHelper.getString(Params.inspectionType)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -230,7 +230,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     String propertyTypeComment = PreferenceHelper.getString(Params.propertyTypeComment);
     result = writeChecklistRegularParagraph(
-        text: "Type of property: ${propertyTypeComment.isNotEmpty ? propertyTypeComment : PreferenceHelper.getString(Params.propertyType)}",
+        text: "Property type: ${propertyTypeComment.isNotEmpty ? propertyTypeComment : PreferenceHelper.getString(Params.propertyType)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -696,7 +696,20 @@ class _PreviewScreenState extends State<PreviewScreen> {
     String formattedDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
     String filename = "$projectNumber-Checklist-$formattedDate.pdf";
     final File file = File('$path/$filename');
-    await file.writeAsBytes(bytes, flush: true);
+    bool isExist = await file.exists();
+    try {
+      if (!isExist) {
+        await file.create();
+      }
+      await file.writeAsBytes(bytes, flush: true);
+    }
+    catch (e) {
+      if (!isExist) {
+        await file.create();
+      }
+      await file.writeAsBytes(bytes, flush: true);
+    }
+
     print("========================= PDF created ======================");
     print('$path/$filename');
 
@@ -1492,7 +1505,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     //Add rows to grid. Set the cells style
     PdfGridRow row1 = grid.rows.add();
-    PdfBitmap bitmap = PdfBitmap(await _readImageData("pdf_logo.png"));
     row1.cells[0].value = "";
     if (!isPdf) {
       row1.cells[0].style = PdfGridCellStyle(
@@ -1522,7 +1534,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     PdfGridRow row22 = grid2.rows.add();
     row22.cells[0].columnSpan = 4;
     row22.cells[0].style = PdfGridCellStyle(borders: bottomBorder);
-    row22.cells[0].value = generateCell("Description:", getString(Params.inspectionType));
+    row22.cells[0].value = generateCell("Description:", isPdf ? "Inspection Checklist" : getString(Params.inspectionType));
 
     PdfGridRow row23 = grid2.rows.add();
     row23.cells[0].style = PdfGridCellStyle(borders: rightBorder);

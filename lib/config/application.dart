@@ -20,6 +20,11 @@ class Application {
     "Muhammed Jagot"
   ];
 
+  static List<String> Employees2 = [
+    "None",
+    ...Employees
+  ];
+
   static List<String> InspectionType = [
     "General Structural Inspection (GSI)",
     "Specific Structural Inspection (SSI)"

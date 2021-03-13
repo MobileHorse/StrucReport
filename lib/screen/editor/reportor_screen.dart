@@ -4,10 +4,8 @@ import 'package:strucreport/bloc/bloc.dart';
 import 'package:strucreport/config/application.dart';
 import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
-import 'package:strucreport/util/preference_helper.dart';
-import 'package:strucreport/widget/dropdown_widget.dart';
-import 'package:strucreport/widget/label_widget.dart';
-import 'package:strucreport/widget/text_content_widget.dart';
+import 'package:strucreport/widget/app_date_picker.dart';
+import 'package:strucreport/widget/app_dropdown.dart';
 
 class ReporterScreen extends StatefulWidget {
   @override
@@ -17,21 +15,11 @@ class ReporterScreen extends StatefulWidget {
 class _ReporterScreenState extends State<ReporterScreen> {
 
   EditorBloc bloc;
-  DateTime _preparedDate, _checkedDate, _approvedDate;
-  String _preparedBy, _checkedBy, _approvedBy;
 
   @override
   void initState() {
     super.initState();
     bloc = BlocProvider.of<EditorBloc>(context);
-    String inspectedBy = PreferenceHelper.getString(Params.inspectedBy);
-    DateTime inspectedDate = PreferenceHelper.getDate(Params.inspectedDate);
-    _preparedBy = inspectedBy;
-    _preparedDate = inspectedDate;
-    _checkedBy = inspectedBy;
-    _checkedDate = inspectedDate;
-    _approvedBy = inspectedBy;
-    _approvedDate = inspectedDate;
   }
 
   @override
@@ -61,119 +49,15 @@ class _ReporterScreenState extends State<ReporterScreen> {
                           height: 8,
                           width: double.infinity,
                         ),
-                        DropdownWidget(
-                          label: "Prepared by: ",
-                          initial: _preparedBy,
-                          values: Application.Employees,
-                          onChange: (val) {
-                            setState(() {
-                              _preparedBy = val;
-                            });
-                          },
+                        AppDropdownWidget(
+                          label: "Inspected by: ",
+                          prefKey: Params.inspectedDate2,
+                          values: Application.Employees2,
                         ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: LabelWidget(label: "Prepared Date: "),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            NeumorphicButton(
-                              style: NeumorphicStyle(
-                                  shape: NeumorphicShape.convex),
-                              child: TextContentWidget(
-                                text:
-                                "${_preparedDate.toLocal()}".split(' ')[0],
-                              ),
-                              onPressed: () => _selectPreparedDate(context),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        DropdownWidget(
-                          label: "Checked by: ",
-                          initial: _checkedBy,
-                          values: Application.Employees,
-                          onChange: (val) {
-                            setState(() {
-                              _checkedBy = val;
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: LabelWidget(label: "Checked Date: "),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            NeumorphicButton(
-                              style: NeumorphicStyle(
-                                  shape: NeumorphicShape.convex),
-                              child: TextContentWidget(
-                                text:
-                                "${_checkedDate.toLocal()}".split(' ')[0],
-                              ),
-                              onPressed: () => _selectCheckedDate(context),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 40,
-                        ),
-                        DropdownWidget(
-                          label: "Approved by: ",
-                          initial: _approvedBy,
-                          values: Application.Employees,
-                          onChange: (val) {
-                            setState(() {
-                              _approvedBy = val;
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Expanded(
-                              child: LabelWidget(label: "Approved Date: "),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            NeumorphicButton(
-                              style: NeumorphicStyle(
-                                  shape: NeumorphicShape.convex),
-                              child: TextContentWidget(
-                                text:
-                                "${_approvedDate.toLocal()}".split(' ')[0],
-                              ),
-                              onPressed: () => _selectApprovedDate(context),
-                            ),
-                          ],
+                        AppDatePicker(
+                          label: "Inspected date: ",
+                          prefKey: Params.inspector2,
+                          isAlignedEnd: true,
                         ),
                       ],
                     ),
@@ -215,66 +99,6 @@ class _ReporterScreenState extends State<ReporterScreen> {
         SizedBox(height: 40,)
       ],
     );
-  }
-
-  _selectPreparedDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: _preparedDate,
-      // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      builder: (context, child) => Theme(
-        data: NeumorphicTheme.of(context).isUsingDark
-            ? ThemeData.dark()
-            : ThemeData.light(),
-        child: child,
-      ),
-    );
-    if (picked != null && picked != _preparedDate)
-      setState(() {
-        _preparedDate = picked;
-      });
-  }
-
-  _selectCheckedDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: _checkedDate,
-      // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      builder: (context, child) => Theme(
-        data: NeumorphicTheme.of(context).isUsingDark
-            ? ThemeData.dark()
-            : ThemeData.light(),
-        child: child,
-      ),
-    );
-    if (picked != null && picked != _checkedDate)
-      setState(() {
-        _checkedDate = picked;
-      });
-  }
-
-  _selectApprovedDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: _approvedDate,
-      // Refer step 1
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-      builder: (context, child) => Theme(
-        data: NeumorphicTheme.of(context).isUsingDark
-            ? ThemeData.dark()
-            : ThemeData.light(),
-        child: child,
-      ),
-    );
-    if (picked != null && picked != _approvedDate)
-      setState(() {
-        _approvedDate = picked;
-      });
   }
 
 }

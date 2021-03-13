@@ -75,4 +75,8 @@ class Params {
 
   // photos
   static final String photos = "photos";
+
+  // inspector
+  static final String inspector2 = "inspector2";
+  static final String inspectedDate2 = "inspectedDate2";
 }
