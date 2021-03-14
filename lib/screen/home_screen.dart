@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:simple_permissions/simple_permissions.dart';
@@ -44,54 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
             fontSize: 80));
   }
 
-  Widget _firstBox() {
-    return Neumorphic(
-      margin: EdgeInsets.symmetric(horizontal: 4),
-      style: NeumorphicStyle(
-        boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-      ),
-      child: Neumorphic(
-        style: NeumorphicStyle(
-          depth: -1,
-          oppositeShadowLightSource: true,
-          color: Colors.white.withOpacity(0.3)
-        ),
-        padding: EdgeInsets.all(2),
-        child: SizedBox(
-          width: 40,
-          height: 60,
-        ),
-      ),
-    );
-  }
-
-  Widget _secondBox() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 4),
-      child: Transform.rotate(
-        angle: 0.79,
-        child: Neumorphic(
-          style: NeumorphicStyle(
-            lightSource: LightSource.topLeft,
-            boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
-          ),
-          child: Neumorphic(
-            style: NeumorphicStyle(
-              depth: -1,
-              oppositeShadowLightSource: true,
-              lightSource: LightSource.topLeft,
-                color: Colors.white.withOpacity(0.3)
-            ),
-            child: SizedBox(
-              width: 50,
-              height: 50,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,7 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               SizedBox(height: 24),
               _buildTopBar(context),
-              SizedBox(height: 80),
+              SizedBox(height: 40),
+              Image.asset('assets/images/logo.png', width: 160,),
+              SizedBox(height: 20),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
@@ -110,17 +65,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   _letter("S"),
                   _letter("t"),
                   _letter("r"),
-                  _firstBox(),
+                  _letter("u"),
                   _letter("c"),
                   _letter("R"),
                   _letter("e"),
                   _letter("p"),
-                  _secondBox(),
+                  _letter("o"),
                   _letter("r"),
                   _letter("t"),
                 ],
               ),
-              SizedBox(height: 120,),
+              SizedBox(height: 100,),
               NeumorphicButton(
                 onPressed: () {
                   if (PreferenceHelper.getKeys() == null || PreferenceHelper.getKeys().isEmpty) {

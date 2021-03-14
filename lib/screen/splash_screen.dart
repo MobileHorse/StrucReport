@@ -10,7 +10,7 @@ class SplashScreen extends StatelessWidget {
         child: Scaffold(
           backgroundColor: Colors.transparent,
           body: Center(
-            child: NeumorphicText(
+            child: /*NeumorphicText(
               "StrucReport",
               textStyle: NeumorphicTextStyle(
                 fontSize: 100,
@@ -24,7 +24,8 @@ class SplashScreen extends StatelessWidget {
                 depth: 3,
                 lightSource: LightSource.topLeft,
               ),
-            )
+            )*/
+            Image.asset('assets/images/logo.png', width: 240,),
           ),
         ),
       ),
