@@ -2,28 +2,43 @@ import 'dart:io';
 
 class FileUtils {
   static Future<Directory> getProjectDirectory(String projectNumber) async {
+    Directory rootDir, projectDir;
     try {
-      Directory rootDir = new Directory('/storage/emulated/0/StrucReport');
+      rootDir = new Directory('/storage/emulated/0/StrucReport');
       if (!(await rootDir.exists())) {
         await rootDir.create(recursive: true);
       }
-      Directory projectDir = new Directory(rootDir.path + '/' + projectNumber);
+      print("----------- in Try -----------");
+    } catch (e) {
+      print("----------- in Catch -----------");
+      rootDir = new Directory('/storage/emulated/0/StrucReport');
+      if (!(await rootDir.exists())) {
+        await rootDir.create(recursive: true);
+      }
+
+    }
+    try {
+      projectDir = new Directory(rootDir.path + '/' + projectNumber);
       if (!(await projectDir.exists())) projectDir.create(recursive: true);
       return projectDir;
     } catch (e) {
-      return null;
+      projectDir = new Directory(rootDir.path + '/' + projectNumber);
+      if (!(await projectDir.exists())) projectDir.create(recursive: true);
+      return projectDir;
     }
   }
 
   static Future<Directory> getProjectImageDirectory(String projectNumber) async {
+    Directory projectDir = await getProjectDirectory(projectNumber);
+    Directory imageDir;
     try {
-      Directory projectDir = await getProjectDirectory(projectNumber);
-      if (projectDir == null) return null;
-      Directory imageDir = new Directory(projectDir.path + '/images');
+      imageDir = new Directory(projectDir.path + '/images');
       if (!(await imageDir.exists())) imageDir.create(recursive: true);
       return imageDir;
     } catch (e) {
-      return null;
+      imageDir = new Directory(projectDir.path + '/images');
+      if (!(await imageDir.exists())) imageDir.create(recursive: true);
+      return imageDir;
     }
   }
 }

@@ -9,6 +9,7 @@
    <application
         android:label="strucreport"
         android:icon="@mipmap/ic_launcher"
+       android:requestLegacyExternalStorage="true"
        android:usesCleartextTraffic="true">
        <activity
            android:name="com.yalantis.ucrop.UCropActivity"

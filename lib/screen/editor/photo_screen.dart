@@ -297,9 +297,14 @@ class _PhotoScreenState extends State<PhotoScreen>
   Future<PhotoModel> savePhotoInDirectory(PhotoModel photoModel) async {
     int stamp = DateTime.now().millisecondsSinceEpoch;
     String dest = (await FileUtils.getProjectImageDirectory(PreferenceHelper.getString(Params.projectNumber))).path + '/${PreferenceHelper.getString(Params.projectNumber)}-Photo-' + stamp.toString() + Path.extension(photoModel.image.path);
-    File destFile = await File(dest).create();
-    await photoModel.image.copy(destFile.path);
-    photoModel.image = File(dest);
+    File destFile = File(dest);
+    try {
+      if (!(await destFile.exists())) await destFile.create();
+      await photoModel.image.copy(dest);
+    } catch (e) {
+      await photoModel.image.copy(dest);
+    }
+    photoModel.image = destFile;
     return photoModel;
   }
 
