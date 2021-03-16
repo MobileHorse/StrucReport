@@ -726,18 +726,19 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     String platformResponse;
 
-    /*try {
+    try {
       await FlutterEmailSender.send(email);
       platformResponse = 'success';
     } catch (error) {
       platformResponse = error.toString();
-    }*/
+    }
     print("========= Send Email ===============");
     print(platformResponse);
   }
 
   Future<void> generateReport() async {
     LoadingDialog.showLoadingDialog(context, _keyLoader);
+
     //Create a new PDF document
     final PdfDocument document = PdfDocument();
     PdfPageSettings pageSettings = PdfPageSettings(PdfPageSize.a4);
@@ -768,68 +769,57 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 contentPage.getClientSize().height));
 
     // draw report
-    PdfFont titleFont = PdfStandardFont(PdfFontFamily.helvetica, 14,
-        multiStyle: [PdfFontStyle.bold, PdfFontStyle.underline]);
-    PdfFont italicFont = PdfStandardFont(PdfFontFamily.helvetica, 10,
-        multiStyle: [PdfFontStyle.regular, PdfFontStyle.italic]);
-    PdfFont regularFont = PdfStandardFont(PdfFontFamily.helvetica, 10,
-        multiStyle: [PdfFontStyle.regular]);
-    PdfFont underlineFont = PdfStandardFont(PdfFontFamily.helvetica, 10,
-        multiStyle: [PdfFontStyle.regular, PdfFontStyle.underline]);
+    PdfFont titleFont = PdfStandardFont(PdfFontFamily.helvetica, 14, multiStyle: [PdfFontStyle.bold, PdfFontStyle.underline]);
+    PdfFont italicFont = PdfStandardFont(PdfFontFamily.helvetica, 10, multiStyle: [PdfFontStyle.regular, PdfFontStyle.italic]);
+    PdfFont regularFont = PdfStandardFont(PdfFontFamily.helvetica, 10, multiStyle: [PdfFontStyle.regular]);
+    PdfFont underlineFont = PdfStandardFont(PdfFontFamily.helvetica, 10, multiStyle: [PdfFontStyle.regular, PdfFontStyle.underline]);
 
-    final PdfPage page1 = document.pages.add();
+    /**
+     * 1) Introduction - Client Brief
+     */
+    PdfPage page = document.pages.add();
     PdfLayoutResult result = PdfTextElement(
-            text: "1) Introduction - Client Brief",
-            brush: PdfBrushes.black,
-            font: titleFont,
-            format: PdfStringFormat(alignment: PdfTextAlignment.left))
+        text: "1) Introduction - Client Brief",
+        brush: PdfBrushes.black,
+        font: titleFont,
+        format: PdfStringFormat(alignment: PdfTextAlignment.left))
         .draw(
-            page: page1,
-            bounds: Rect.fromLTWH(20, 20, page1.getClientSize().width, 20));
-    //Add to table of content
+        page: page,
+        bounds: Rect.fromLTWH(20, 20, page.getClientSize().width - 40, page.getClientSize().height));
+
     PdfLayoutResult tableContent = _addTableOfContents(
         contentPage,
         '1) Introduction - Client Brief',
-        Rect.fromLTWH(20, 120, result.page.getClientSize().width - 40,
-            result.page.getClientSize().height),
-        document.pages.indexOf(page1) + 1,
+        Rect.fromLTWH(20, 120, result.page.getClientSize().width - 40, result.page.getClientSize().height),
+        document.pages.indexOf(page) + 1,
         20,
         result.bounds.top,
         result.page);
-    result = PdfTextElement(
-            text:
-                "Simplify Structural Engineering LLP (SSE) has been appointed by the client to carry out a ${getString(Params.inspectionType)} and prepare a report including findings and recommendations at the above-captioned property. The property was inspected on " +
-                    DateFormat('yMMMMEEEEd').format(getDate(Params.inspectedDate)) +
-                    ". \r\n\r\n " +
-                    getString(Params.clientBrief),
-            brush: PdfBrushes.black,
-            font: regularFont,
-            format: PdfStringFormat(
-                alignment: PdfTextAlignment.left, lineSpacing: 8))
-        .draw(
-            page: page1,
-            bounds: Rect.fromLTWH(
-                20,
-                result.bounds.bottom + 20,
-                page1.getClientSize().width - 40,
-                page1.getClientSize().height));
 
+    String clientBrief = getString(Params.clientBrief);
+    if (getString(Params.inspectionType).contains("GSI")) {
+      clientBrief += "\r\n\r\n";
+      clientBrief += "The purpose of this report is to provide the client with information regarding the structural condition of the building.";
+    }
+    result = PdfTextElement(text: clientBrief, brush: PdfBrushes.black, font: regularFont, format: PdfStringFormat(alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(page: page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, page.getClientSize().height));
+
+    /**
+     * 2) Scope of the Structural Survey
+     */
     result = PdfTextElement(
             text: "2) Scope of the Structural Survey",
             brush: PdfBrushes.black,
             font: titleFont,
             format: PdfStringFormat(alignment: PdfTextAlignment.left))
-        .draw(
-            page: page1,
-            bounds: Rect.fromLTWH(20, result.bounds.bottom + 20,
-                page1.getClientSize().width, 20));
+        .draw(page: page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, page.getClientSize().height));
     //Add to table of content
     tableContent = _addTableOfContents(
         contentPage,
         '2) Scope of the Structural Survey',
         Rect.fromLTWH(20, 160, result.page.getClientSize().width - 40,
             result.page.getClientSize().height),
-        document.pages.indexOf(page1) + 1,
+        document.pages.indexOf(page) + 1,
         20,
         result.bounds.top,
         result.page);
@@ -842,25 +832,18 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 "The engineer acknowledges the co-operation of the occupants in allowing access to the property at the agreed time and their assistance in the clarification of points raised during on-site discussions. \r\n",
             brush: PdfBrushes.black,
             font: regularFont,
-            format: PdfStringFormat(
-                alignment: PdfTextAlignment.left, lineSpacing: 8))
-        .draw(
-            page: page1,
-            bounds: Rect.fromLTWH(
-                20,
-                result.bounds.bottom + 20,
-                page1.getClientSize().width - 40,
-                page1.getClientSize().height));
+            format: PdfStringFormat(alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(page: page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, page.getClientSize().height));
 
+    /**
+     * 3) Exclusions
+     */
     result = PdfTextElement(
             text: "3) Exclusions",
             brush: PdfBrushes.black,
             font: titleFont,
             format: PdfStringFormat(alignment: PdfTextAlignment.left))
-        .draw(
-            page: result.page,
-            bounds: Rect.fromLTWH(20, result.bounds.bottom + 20,
-                page1.getClientSize().width, 20));
+        .draw(page: result.page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, page.getClientSize().height));
 
     tableContent = _addTableOfContents(
         contentPage,
@@ -880,25 +863,17 @@ class _PreviewScreenState extends State<PreviewScreen> {
             font: regularFont,
             format: PdfStringFormat(
                 alignment: PdfTextAlignment.left, lineSpacing: 8))
-        .draw(
-            page: page1,
-            bounds: Rect.fromLTWH(
-                20,
-                result.bounds.bottom + 20,
-                result.page.getClientSize().width - 40,
-                result.page.getClientSize().height));
+        .draw(page: page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 20, result.page.getClientSize().width - 40, result.page.getClientSize().height));
 
-    PdfPage page4 = document.pages.add();
-
+    /**
+     * 4) Client Details
+     */
     result = PdfTextElement(
             text: "4) Client Details",
             brush: PdfBrushes.black,
             font: titleFont,
             format: PdfStringFormat(alignment: PdfTextAlignment.left))
-        .draw(
-            page: page4,
-            bounds:
-                Rect.fromLTWH(20, 20, page4.getClientSize().width - 20, 20));
+        .draw(page: page, bounds: Rect.fromLTWH(20, 20, page.getClientSize().width - 40, page.getClientSize().height));
 
     tableContent = _addTableOfContents(
         contentPage,
@@ -1040,16 +1015,15 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 result.bounds.top,
                 result.page.getClientSize().width - 220,
                 result.page.getClientSize().height));
-
+    /**
+     * 5) General Description
+     */
     result = PdfTextElement(
             text: "5) General Description",
             brush: PdfBrushes.black,
             font: titleFont,
             format: PdfStringFormat(alignment: PdfTextAlignment.left))
-        .draw(
-            page: result.page,
-            bounds: Rect.fromLTWH(20, result.bounds.bottom + 60,
-                result.page.getClientSize().width - 40, 20));
+        .draw(page: result.page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 60, result.page.getClientSize().width - 40, result.page.getClientSize().height));
 
     tableContent = _addTableOfContents(
         contentPage,
@@ -1061,25 +1035,44 @@ class _PreviewScreenState extends State<PreviewScreen> {
         result.bounds.top,
         result.page);
 
+    String generalDescription = "";
+    String propertyTypeComment = getString(Params.propertyTypeComment);
+    if (propertyTypeComment.isNotEmpty) {
+      generalDescription += propertyTypeComment;
+    } else {
+      generalDescription += "The property is a ${getString(Params.propertyType).toLowerCase()} house.";
+    }
+    String decade = getString(Params.estimatedConstructionDecade);
+    if (decade.isNotEmpty) {
+      if (StringUtils.isNumeric(decade)) {
+        generalDescription += " The building appears to be constructed crica ${decade}s.";
+      } else if (decade.length > 5) {
+        generalDescription += " $decade";
+      } else {
+        generalDescription += " The building appears to be constructed crica $decade.";
+      }
+    }
+    String roomNumberComment = getString(Params.roomNumberComment);
+    if (roomNumberComment.isNotEmpty) {
+      generalDescription += " \r\n\r\n " + roomNumberComment;
+    } else {
+      String roomNumber = getString(Params.roomNumber);
+      if (roomNumber.isEmpty) roomNumber = Application.NumberOfRooms[0];
+      if (roomNumber != "Other") {
+        generalDescription += " \r\n\r\n " + "It is a $roomNumber property.";
+      }
+    }
+
     result = PdfTextElement(
-            text:
-                /*"The property is a two-storey detached house. The building appears to be constructed circa 1950s. \r\n\r\n" +*/
-                    "It is a " +
-                    (getString(Params.roomNumberComment).isNotEmpty ? getString(Params.roomNumberComment) : getString(Params.roomNumber)) +
-                    ". \r\n\r\n" /*+
-                    "The property is constructed as follows: \r\n"*/,
+            text: generalDescription,
             brush: PdfBrushes.black,
             font: regularFont,
-            format: PdfStringFormat(
-                alignment: PdfTextAlignment.left, lineSpacing: 8))
-        .draw(
-            page: result.page,
-            bounds: Rect.fromLTWH(
-                20,
-                result.bounds.bottom + 20,
-                result.page.getClientSize().width - 40,
-                result.page.getClientSize().height));
+            format: PdfStringFormat(alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(page: result.page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 20, result.page.getClientSize().width - 40, result.page.getClientSize().height));
 
+    /**
+     * 6) Observations and Findings
+     */
     PdfPage page6 = document.pages.add();
     result = PdfTextElement(
             text: "6) Observations and Findings",
@@ -1419,19 +1412,37 @@ class _PreviewScreenState extends State<PreviewScreen> {
     //Save and dispose the document.
     final List<int> bytes = document.save();
     document.dispose();
-    final Directory directory = await getExternalStorageDirectory();
+
+    final String projectNumber = PreferenceHelper.getString(Params.projectNumber);
+    final Directory directory = await FileUtils.getProjectDirectory(projectNumber);
     final String path = directory.path;
-    final File file = File('$path/strucreport.pdf');
-    await file.writeAsBytes(bytes, flush: true);
+    String formattedDate = DateFormat('dd.MM.yyyy').format(DateTime.now());
+    String filename = "$projectNumber-StrucReport-$formattedDate.pdf";
+    final File file = File('$path/$filename');
+    bool isExist = await file.exists();
+    try {
+      if (!isExist) {
+        await file.create();
+      }
+      await file.writeAsBytes(bytes, flush: true);
+    }
+    catch (e) {
+      if (!isExist) {
+        await file.create();
+      }
+      await file.writeAsBytes(bytes, flush: true);
+    }
+
     print("========================= PDF created ======================");
-    print('$path/strucreport.pdf');
+    print('$path/$filename');
 
     // convert to docx
+    String filename2 = "$projectNumber-StrucReport-$formattedDate.docx";
     Dio dio = new Dio(baseOptions);
     dynamic response = await dio.post(
       "upload/pdf",
       data: FormData.fromMap({
-        "file": await MultipartFile.fromFile('$path/strucreport.pdf', filename: 'strucreport.pdf'),
+        "file": await MultipartFile.fromFile('$path/$filename', filename: 'strucreport.pdf'),
       }),
       onSendProgress: (int sent, int total) {
         print("Progress: Sent - $sent, Total - $total");
@@ -1441,7 +1452,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     response = await dio.download(
         "media/$response",
-        "$path/strucreport.docx",
+        '$path/$filename2',
         onReceiveProgress: (int received, int total) {
           print("Progress: Received - $received, Total - $total");
         });
@@ -1453,7 +1464,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
       body: "StrucReport",
       subject: "New report created",
       recipients: Application.Emails,
-      attachmentPaths: ['$path/strucreport.docx'],
+      attachmentPaths: ['$path/$filename2', '$path/$filename'],
       isHTML: false,
     );
 
@@ -1666,6 +1677,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
       {String text = "", PdfPage page, double left = 20, double top = 0}) {
     PdfFont regularFont = PdfStandardFont(PdfFontFamily.helvetica, 10,
         multiStyle: [PdfFontStyle.regular]);
+    print("------ checklist paragraph -------");
+    print(text);
+    print("top: $top");
     return PdfTextElement(
             text: text,
             brush: PdfBrushes.black,

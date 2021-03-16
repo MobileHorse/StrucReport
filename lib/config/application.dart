@@ -8,7 +8,8 @@ class Application {
   static String photoElementDelimiter = "#*__*#";
 
   static List<String> Emails = [
-    "robert.simplify@gmail.com",
+    /*"robert.simplify@gmail.com",*/
+    "selivestrovdanil47@gmail.com"
 
   ];
 
@@ -59,7 +60,8 @@ class Application {
   static List<String> NumberOfRooms = [
     "1-Bedroom property",
     "2-Bedroom property",
-    "3-Bedroom property"
+    "3-Bedroom property",
+    "Other"
   ];
 
   static List<String> Weather = [
