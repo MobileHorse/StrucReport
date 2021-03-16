@@ -62,6 +62,13 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           label: "Address:",
                           prefKey: Params.address,
                         ),
+                        AppSwitchWidget(
+                          label: "Surveyor’s report available:",
+                          prefKey: Params.surveyorReportAvailable,
+                        ),
+                        AppCommentWidget(
+                          prefKey: Params.surveyorReportAvailableComment,
+                        ),
                         AppDatePicker(
                           label: "Date: ",
                           prefKey: Params.inspectedDate,

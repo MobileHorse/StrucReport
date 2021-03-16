@@ -607,6 +607,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
         page: result.page,
         top: result.bounds.bottom + 10);
 
+    print("error debug:");
+    print(getString(Params.observedJunctionMovementComment));
     if (getString(Params.observedJunctionMovementComment).isNotEmpty) {
       result = writeChecklistCommentParagraph(
           text: "${getString(Params.observedJunctionMovementComment)}",
@@ -724,12 +726,12 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     String platformResponse;
 
-    try {
+    /*try {
       await FlutterEmailSender.send(email);
       platformResponse = 'success';
     } catch (error) {
       platformResponse = error.toString();
-    }
+    }*/
     print("========= Send Email ===============");
     print(platformResponse);
   }

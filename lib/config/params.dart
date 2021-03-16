@@ -3,6 +3,8 @@ class Params {
   static final String clientName = "clientName";
   static final String projectNumber = "projectNumber";
   static final String address = "address";
+  static final String surveyorReportAvailable = "surveyorReportAvailable";
+  static final String surveyorReportAvailableComment = "surveyorReportAvailableComment";
   static final String inspectedBy = "inspectedBy";
   static final String inspectedDate = "inspectedDate";
   static final String inspectionType = "inspectionType";
@@ -61,7 +63,7 @@ class Params {
   static final String observedBayWindowMovement = "observedBayWindowMovement";
   static final String observedBayWindowMovementComment = "observedBayWindowMovementComment";
   static final String observedJunctionMovement = "observedJunctionMovement";
-  static final String observedJunctionMovementComment = "observedJunctionMovement";
+  static final String observedJunctionMovementComment = "observedJunctionMovementComment";
   static final String roofSagging = "roofSagging";
   static final String roofSaggingComment = "roofSaggingComment";
   static final String inspectedAllRooms = "inspectedAllRooms";
