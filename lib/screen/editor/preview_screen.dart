@@ -17,6 +17,7 @@ import 'package:strucreport/util/color_utils.dart';
 import 'package:strucreport/util/file_utils.dart';
 import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/util/string_utils.dart';
+import 'package:strucreport/util/toasts.dart';
 import 'package:strucreport/widget/loading_dialog.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 
@@ -737,6 +738,19 @@ class _PreviewScreenState extends State<PreviewScreen> {
   }
 
   Future<void> generateReport() async {
+    try {
+      final result = await InternetAddress.lookup('google.com');
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        print('connected');
+      } else {
+        ToastUtils.showErrorToast(context, "Please connect to Internet");
+        return;
+      }
+    } on SocketException catch (_) {
+      ToastUtils.showErrorToast(context, "Please connect to Internet");
+      return;
+    }
+
     LoadingDialog.showLoadingDialog(context, _keyLoader);
 
     //Create a new PDF document
