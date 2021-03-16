@@ -868,6 +868,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     /**
      * 4) Client Details
      */
+    page = document.pages.add();
     result = PdfTextElement(
             text: "4) Client Details",
             brush: PdfBrushes.black,
@@ -1062,7 +1063,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
         generalDescription += " \r\n\r\n " + "It is a $roomNumber property.";
       }
     }
-
+    generalDescription += "\r\n\r\n The property is constructed as follows: ";
     result = PdfTextElement(
             text: generalDescription,
             brush: PdfBrushes.black,
@@ -1070,24 +1071,140 @@ class _PreviewScreenState extends State<PreviewScreen> {
             format: PdfStringFormat(alignment: PdfTextAlignment.left, lineSpacing: 8))
         .draw(page: result.page, bounds: Rect.fromLTWH(20, result.bounds.bottom + 20, result.page.getClientSize().width - 40, result.page.getClientSize().height));
 
+    result = PdfTextElement(
+        text: "Main walls:",
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            80,
+            result.bounds.bottom + 20,
+            result.page.getClientSize().width - 100,
+            result.page.getClientSize().height));
+    String externalWallsComment = getString(Params.externalWallsConstructionComment);
+    if (externalWallsComment.isEmpty) externalWallsComment = getString(Params.externalWallsConstruction);
+    result = PdfTextElement(
+        text: externalWallsComment,
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            200,
+            result.bounds.top,
+            result.page.getClientSize().width - 220,
+            result.page.getClientSize().height));
+
+    result = PdfTextElement(
+        text: "Internal walls:",
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            80,
+            result.bounds.bottom + 20,
+            result.page.getClientSize().width - 100,
+            result.page.getClientSize().height));
+    String internalWalls = getString(Params.internalFaceGableWallComment);
+    if (internalWalls.isEmpty) internalWalls = getString(Params.internalFaceGableWall);
+    result = PdfTextElement(
+        text: internalWalls,
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            200,
+            result.bounds.top,
+            result.page.getClientSize().width - 220,
+            result.page.getClientSize().height));
+
+    result = PdfTextElement(
+        text: "Roof:",
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            80,
+            result.bounds.bottom + 20,
+            result.page.getClientSize().width - 100,
+            result.page.getClientSize().height));
+    String roofCover = getString(Params.coverOfRoofComment);
+    if (roofCover.isEmpty) roofCover = getString(Params.coverOfRoof);
+    result = PdfTextElement(
+        text: roofCover,
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            200,
+            result.bounds.top,
+            result.page.getClientSize().width - 220,
+            result.page.getClientSize().height));
+
+    result = PdfTextElement(
+        text: "Floors:",
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            80,
+            result.bounds.bottom + 20,
+            result.page.getClientSize().width - 100,
+            result.page.getClientSize().height));
+    String floorConstruction = getString(Params.constructionOfFloorsOnGroundFloor);
+    floorConstruction += ", " + getString(Params.constructionOfFloorsOnFirstFloor);
+    result = PdfTextElement(
+        text: floorConstruction,
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            200,
+            result.bounds.top,
+            result.page.getClientSize().width - 220,
+            result.page.getClientSize().height));
+
     /**
      * 6) Observations and Findings
      */
-    PdfPage page6 = document.pages.add();
+    page = document.pages.add();
     result = PdfTextElement(
             text: "6) Observations and Findings",
             brush: PdfBrushes.black,
             font: titleFont,
             format: PdfStringFormat(alignment: PdfTextAlignment.left))
         .draw(
-            page: page6,
-            bounds: Rect.fromLTWH(20, 20, page6.getClientSize().width, 20));
+            page: page,
+            bounds: Rect.fromLTWH(20, 20, page.getClientSize().width, page.getClientSize().height));
     tableContent = _addTableOfContents(
         tableContent.page,
         '6) Observations and Findings',
         Rect.fromLTWH(20, 320, result.page.getClientSize().width - 40,
             result.page.getClientSize().height),
-        document.pages.indexOf(page6) + 1,
+        document.pages.indexOf(page) + 1,
         20,
         result.bounds.top,
         result.page);
@@ -1096,13 +1213,13 @@ class _PreviewScreenState extends State<PreviewScreen> {
     List<PhotoModel> photos = reportPhotos.where((element) => element.inReport).toList();
     for (int i = 0; i < photos.length; i++) {
       if (i % 2 == 0 && i > 0) {
-        page6 = document.pages.add();
+        page = document.pages.add();
       }
       String caption = "Photo ${i + 1} - " + photos[i].caption;
       Size captionSize = regularFont.measureString(caption);
       final bytes = await photos[i].image.readAsBytes();
       if (i % 2 == 0) {
-        page6.graphics
+        page.graphics
             .drawImage(PdfBitmap(bytes), Rect.fromLTWH(120, 50, 320, 240));
         PdfTextElement(
                 text: caption,
@@ -1110,48 +1227,204 @@ class _PreviewScreenState extends State<PreviewScreen> {
                 font: regularFont,
                 format: PdfStringFormat(alignment: PdfTextAlignment.left))
             .draw(
-                page: page6,
-                bounds: Rect.fromLTWH((555 - captionSize.width) / 2, 320,
-                    page6.getClientSize().width, page6.getClientSize().height));
-        page6.graphics.drawRectangle(
-            bounds: Rect.fromLTWH((555 - captionSize.width) / 2 - 20, 310,
+                page: page,
+                bounds: Rect.fromLTWH((555 - captionSize.width) / 2, 315,
+                    page.getClientSize().width, page.getClientSize().height));
+        page.graphics.drawRectangle(
+            bounds: Rect.fromLTWH((555 - captionSize.width) / 2 - 20, 305,
                 captionSize.width + 40, captionSize.height + 20),
             pen: PdfPen(PdfColor(0, 0, 0, 255)));
       } else {
-        page6.graphics
-            .drawImage(PdfBitmap(bytes), Rect.fromLTWH(120, 357, 320, 240));
+        page.graphics
+            .drawImage(PdfBitmap(bytes), Rect.fromLTWH(120, 345, 320, 240));
         PdfTextElement(
                 text: caption,
                 brush: PdfBrushes.black,
                 font: regularFont,
                 format: PdfStringFormat(alignment: PdfTextAlignment.left))
             .draw(
-                page: page6,
+                page: page,
                 bounds: Rect.fromLTWH(
                     (555 - captionSize.width) / 2,
-                    page6.getClientSize().height - 30,
-                    page6.getClientSize().width,
-                    page6.getClientSize().height));
-        page6.graphics.drawRectangle(
+                    page.getClientSize().height - 50,
+                    page.getClientSize().width,
+                    page.getClientSize().height));
+        page.graphics.drawRectangle(
             bounds: Rect.fromLTWH(
                 (555 - captionSize.width) / 2 - 20,
-                page6.getClientSize().height - 40,
+                page.getClientSize().height - 60,
                 captionSize.width + 40,
                 captionSize.height + 20),
             pen: PdfPen(PdfColor(0, 0, 0, 255)));
       }
     }
 
-    final PdfPage page7 = document.pages.add();
+    page = document.pages.add();
+    result = PdfTextElement(
+        text: "External wall elevations",
+        brush: PdfBrushes.black,
+        font: titleFont,
+        format: PdfStringFormat(alignment: PdfTextAlignment.left))
+        .draw(
+        page: page,
+        bounds:
+        Rect.fromLTWH(20, 20, page.getClientSize().width - 40, 20));
+    String externalWallElevations = "";
+    if (getBool(Params.externalElevations)) {
+      externalWallElevations += "The external elevations appeared to be in acceptable condition.";
+    } else {
+      externalWallElevations += "The external elevations appeared to be in not acceptable condition.";
+    }
+
+    bool mortarJoints = getBool(Params.observedDefectiveMortarJoints);
+    bool crackLintel = getBool(Params.observedAnyCracksAboveLintels);
+    String observedSomeMotar = "";
+    if (mortarJoints && crackLintel) {
+      observedSomeMotar = "We observed some defective mortar joints and cracking to the solider course lintel and below the front elevation window.";
+    } else if (mortarJoints) {
+      observedSomeMotar = "We observed some defective mortar joints.";
+    } else if (crackLintel) {
+      observedSomeMotar = "We observed some cracking to the solider course lintel and below the front elevation window.";
+    }
+    if (observedSomeMotar.isNotEmpty) externalWallElevations += observedSomeMotar;
+    
+    if (getBool(Params.observedJunctionMovement)) {
+      externalWallElevations += "\r\n\r\n";
+      externalWallElevations += "We observed some cracking/movement between the porch and main building, this appears to be due to the historical settlement of the porch. Presently, the porch appears to be in acceptable condition and a movement joint could be installed to accommodate differential movement between the porch and the main building. If any further movement is observed in the future (more than 5mm) it should be investigated further.";
+    }
+
+    result = PdfTextElement(
+        text: externalWallElevations,
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            20,
+            result.bounds.bottom + 20,
+            result.page.getClientSize().width - 40,
+            result.page.getClientSize().height));
+
+    if (getBool(Params.internalWallsCovered)) {
+      result = PdfTextElement(
+          text: "Internal walls & ceilings",
+          brush: PdfBrushes.black,
+          font: titleFont,
+          format: PdfStringFormat(alignment: PdfTextAlignment.left))
+          .draw(
+          page: page,
+          bounds:
+          Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, 20));
+      result = PdfTextElement(
+          text: "The internal walls are covered with paint and plaster therefore we are unable to confirm that these parts of the building are free from defects. However, there are various cracks in the plaster that were noticed during our site visit. The cracks observed could be repaired or made-good during normal redecoration",
+          brush: PdfBrushes.black,
+          font: regularFont,
+          format: PdfStringFormat(
+              alignment: PdfTextAlignment.left, lineSpacing: 8))
+          .draw(
+          page: result.page,
+          bounds: Rect.fromLTWH(
+              20,
+              result.bounds.bottom + 20,
+              result.page.getClientSize().width - 40,
+              result.page.getClientSize().height));
+    }
+
+    result = PdfTextElement(
+        text: "Floors",
+        brush: PdfBrushes.black,
+        font: titleFont,
+        format: PdfStringFormat(alignment: PdfTextAlignment.left))
+        .draw(
+        page: page,
+        bounds:
+        Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, 20));
+    result = PdfTextElement(
+        text: "All floors appear to be in acceptable condition, considering the age of the property.",
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            20,
+            result.bounds.bottom + 20,
+            result.page.getClientSize().width - 40,
+            result.page.getClientSize().height));
+
+    result = PdfTextElement(
+        text: "Roof",
+        brush: PdfBrushes.black,
+        font: titleFont,
+        format: PdfStringFormat(alignment: PdfTextAlignment.left))
+        .draw(
+        page: page,
+        bounds:
+        Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, 20));
+    String roof = "The roof is a traditional timber construction and was in acceptable condition. The roof tiles illustrated signs of natural weathering throughout (slightly cracked/chipped in places).";
+    if (getBool(Params.observedDislodged)) {
+      roof += "There did not appear to be any significantly dislodged [tiles/slates], but periodic maintenance work is recommended, a roofing contractor should be consulted for further advice. ";
+    } else {
+      roof += "Some dislodged tiles/slates were observed, and maintenance repairs are required, a roofing contractor should be consulted for further advice.";
+    }
+    roof += "\r\n\r\n";
+    roof += "Generally, the roof appears to be in acceptable condition based on internal and external observations only, we have not inspected any covered or not accessible timberwork.";
+
+    result = PdfTextElement(
+        text: roof,
+        brush: PdfBrushes.black,
+        font: regularFont,
+        format: PdfStringFormat(
+            alignment: PdfTextAlignment.left, lineSpacing: 8))
+        .draw(
+        page: result.page,
+        bounds: Rect.fromLTWH(
+            20,
+            result.bounds.bottom + 20,
+            result.page.getClientSize().width - 40,
+            result.page.getClientSize().height));
+
+    if (getBool(Params.chimneyMaintenance)) {
+      result = PdfTextElement(
+          text: "Chimney",
+          brush: PdfBrushes.black,
+          font: titleFont,
+          format: PdfStringFormat(alignment: PdfTextAlignment.left))
+          .draw(
+          page: page,
+          bounds:
+          Rect.fromLTWH(20, result.bounds.bottom + 20, page.getClientSize().width - 40, 20));
+      result = PdfTextElement(
+          text: "The chimney stack appeared to be in acceptable condition, we did observe some defective mortar joints. It is recommended, as a precautionary measure that the chimney is to be inspected closely when any roof maintenance work is carried out and when a safe working platform is in place, to fully confirm the exact condition of the masonry and mortar.",
+          brush: PdfBrushes.black,
+          font: regularFont,
+          format: PdfStringFormat(
+              alignment: PdfTextAlignment.left, lineSpacing: 8))
+          .draw(
+          page: result.page,
+          bounds: Rect.fromLTWH(
+              20,
+              result.bounds.bottom + 20,
+              result.page.getClientSize().width - 40,
+              result.page.getClientSize().height));
+    }
+
+    /**
+     * 7) Conclusion and Recommendations
+     */
+    page = document.pages.add();
     result = PdfTextElement(
             text: "7) Conclusion and Recommendations",
             brush: PdfBrushes.black,
             font: titleFont,
             format: PdfStringFormat(alignment: PdfTextAlignment.left))
         .draw(
-            page: page7,
+            page: page,
             bounds:
-                Rect.fromLTWH(20, 20, page7.getClientSize().width - 40, 20));
+                Rect.fromLTWH(20, 20, page.getClientSize().width - 40, 20));
 
     tableContent = _addTableOfContents(
         contentPage,
@@ -1345,6 +1618,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
       index++;
     }
 
+    /**
+     * 8) Terms & Conditions
+     */
     final PdfPage page8 = document.pages.add();
     result = PdfTextElement(
             text: "8) Terms & Conditions",
@@ -1464,7 +1740,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
       body: "StrucReport",
       subject: "New report created",
       recipients: Application.Emails,
-      attachmentPaths: ['$path/$filename2', '$path/$filename'],
+      attachmentPaths: ['$path/$filename2'/*, '$path/$filename'*/],
       isHTML: false,
     );
 
