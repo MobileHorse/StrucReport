@@ -93,7 +93,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                         SizedBox(
                           height: 80,
                         ),
-                        NeumorphicButton(
+                        /*NeumorphicButton(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 35, vertical: 20),
                           onPressed: () async {
@@ -118,7 +118,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                               )
                             ],
                           ),
-                        )
+                        )*/
                       ],
                     ),
                   ),
@@ -214,8 +214,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
         page: result.page,
         top: result.bounds.bottom + 10);
 
+    String inspector = PreferenceHelper.getString(Params.inspectedBy);
+    String secondInspector = PreferenceHelper.getString(Params.inspector2);
+    if (secondInspector.isNotEmpty && secondInspector != "None") inspector += ", $secondInspector";
     result = writeChecklistRegularParagraph(
-        text: "Inspected by: ${PreferenceHelper.getString(Params.inspectedBy)}",
+        text: "Inspected by: $inspector",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -223,29 +226,54 @@ class _PreviewScreenState extends State<PreviewScreen> {
         text: "Inspection type: ${PreferenceHelper.getString(Params.inspectionType)}",
         page: result.page,
         top: result.bounds.bottom + 10);
+    String inspectionTypeComment = PreferenceHelper.getString(Params.inspectionTypeComment);
+    if (inspectionTypeComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: inspectionTypeComment,
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
     result = writeChecklistRegularParagraph(
-        text: "Client\'s brief: ${PreferenceHelper.getString(Params.clientBrief)}",
+        text: "Client\'s brief:",
         page: result.page,
         top: result.bounds.bottom + 10);
+    String clientBrief = PreferenceHelper.getString(Params.clientBrief);
+    if (clientBrief.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: clientBrief,
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
+    result = writeChecklistRegularParagraph(
+        text: "Property type: ${PreferenceHelper.getString(Params.propertyType)}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
     String propertyTypeComment = PreferenceHelper.getString(Params.propertyTypeComment);
-    result = writeChecklistRegularParagraph(
-        text: "Property type: ${propertyTypeComment.isNotEmpty ? propertyTypeComment : PreferenceHelper.getString(Params.propertyType)}",
-        page: result.page,
-        top: result.bounds.bottom + 10);
+    if (propertyTypeComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: propertyTypeComment,
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
-    String presentAtSiteComment = PreferenceHelper.getString(Params.presentAtSiteComment);
     result = writeChecklistRegularParagraph(
-        text: "Present at site: ${presentAtSiteComment.isNotEmpty ? presentAtSiteComment : PreferenceHelper.getString(Params.presentAtSite)}",
+        text: "Present at site: ${PreferenceHelper.getString(Params.presentAtSite)}",
         page: result.page,
         top: result.bounds.bottom + 10);
+    String presentAtSiteComment = PreferenceHelper.getString(Params.presentAtSiteComment);
+    if (presentAtSiteComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: presentAtSiteComment,
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
     result = writeChecklistRegularParagraph(
         text: "Person at site comments:",
         page: result.page,
         top: result.bounds.bottom + 10);
-
     String personAtSiteComment = PreferenceHelper.getString(Params.personAtSiteComment);
     if (personAtSiteComment.isNotEmpty) {
       result = writeChecklistCommentParagraph(
@@ -255,17 +283,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Estimated construction decade:",
+        text: "Estimated construction decade: ${PreferenceHelper.getString(Params.estimatedConstructionDecade)}",
         page: result.page,
         top: result.bounds.bottom + 10);
-
-    String estimatedConstructionDecade = PreferenceHelper.getString(Params.estimatedConstructionDecade);
-    if (estimatedConstructionDecade.isNotEmpty) {
-      result = writeChecklistCommentParagraph(
-          text: "$estimatedConstructionDecade",
-          page: result.page,
-          top: result.bounds.bottom + 6);
-    }
 
     result = writeChecklistRegularParagraph(
         text: "External walls construction: ${PreferenceHelper.getString(Params.externalWallsConstruction)}",
@@ -284,21 +304,40 @@ class _PreviewScreenState extends State<PreviewScreen> {
         text: "What is covering of roof: ${PreferenceHelper.getString(Params.coverOfRoof)}",
         page: result.page,
         top: result.bounds.bottom + 10);
+    String roofCoverComment = PreferenceHelper.getString(Params.coverOfRoofComment);
+    if (roofCoverComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "$roofCoverComment",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
+    result = writeChecklistRegularParagraph(
+        text: "How many rooms/bedrooms: ${PreferenceHelper.getString(Params.roomNumber)}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
     String roomNumberComment = PreferenceHelper.getString(Params.roomNumberComment);
+    if (roomNumberComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "$roomNumberComment",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
+
     result = writeChecklistRegularParagraph(
-        text: "How many rooms/bedrooms: ${roomNumberComment.isNotEmpty ? roomNumberComment : PreferenceHelper.getString(Params.roomNumber)}",
+        text: "Weather: ${PreferenceHelper.getString(Params.weather)}",
         page: result.page,
         top: result.bounds.bottom + 10);
-
     String weatherComment = PreferenceHelper.getString(Params.weatherComment);
-    result = writeChecklistRegularParagraph(
-        text: "Weather: ${weatherComment.isNotEmpty ? weatherComment : PreferenceHelper.getString(Params.weather)}",
-        page: result.page,
-        top: result.bounds.bottom + 10);
+    if (weatherComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "$weatherComment",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
     result = writeChecklistRegularParagraph(
-        text: "Is the property on a hill, slope, any trees in proximity?",
+        text: "Is the property on a hill, slope, any trees in proximity? : ",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -312,29 +351,47 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     bool anyChimneyStacks = PreferenceHelper.getBool(Params.anyChimneyStacks);
     result = writeChecklistRegularParagraph(
-        text: "Any chimney stacks? ${anyChimneyStacks ? 'Yes' : 'No'}",
+        text: "Any chimney stacks? : ${anyChimneyStacks ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
     if (anyChimneyStacks) {
-      String chimneyMaintenanceComment = PreferenceHelper.getString(Params.chimneyMaintenanceComment);
       result = writeChecklistRegularParagraph(
-          text: "Do chimney stacks require maintenance? ${chimneyMaintenanceComment.isNotEmpty ? chimneyMaintenanceComment : PreferenceHelper.getBool(Params.chimneyMaintenance) ? 'Yes' : 'No'}",
+          text: "Do chimney stacks require maintenance? : ${PreferenceHelper.getBool(Params.chimneyMaintenance) ? 'Yes' : 'No'}",
           page: result.page,
           top: result.bounds.bottom + 10);
+      String chimneyMaintenanceComment = PreferenceHelper.getString(Params.chimneyMaintenanceComment);
+      if (chimneyMaintenanceComment.isNotEmpty) {
+        result = writeChecklistCommentParagraph(
+            text: "$chimneyMaintenanceComment",
+            page: result.page,
+            top: result.bounds.bottom + 6);
+      }
     }
 
+    result = writeChecklistRegularParagraph(
+        text: "Are internal walls covered in plaster? : ${PreferenceHelper.getBool(Params.internalWallsCovered) ? 'Yes' : 'No'}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
     String internalWallsCoveredComment = PreferenceHelper.getString(Params.internalWallsCoveredComment);
-    result = writeChecklistRegularParagraph(
-        text: "Are internal walls covered in plaster? ${internalWallsCoveredComment.isNotEmpty ? internalWallsCoveredComment : PreferenceHelper.getBool(Params.internalWallsCovered) ? 'Yes' : 'No'}",
-        page: result.page,
-        top: result.bounds.bottom + 10);
+    if (internalWallsCoveredComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "$internalWallsCoveredComment",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
-    String observedDislodgedTilesComment = PreferenceHelper.getString(Params.observedDislodgedComment);
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any dislodged tiles/slates? ${observedDislodgedTilesComment.isNotEmpty ? observedDislodgedTilesComment : PreferenceHelper.getBool(Params.observedDislodged) ? 'Yes' : 'No'}",
+        text: "Have you observed any dislodged tiles/slates? : ${PreferenceHelper.getBool(Params.observedDislodged) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
+    String observedDislodgedTilesComment = PreferenceHelper.getString(Params.observedDislodgedComment);
+    if (observedDislodgedTilesComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "$observedDislodgedTilesComment",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
     // insert photos
     PdfPage page2 = document.pages.add();
@@ -436,7 +493,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
         result.page);
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any internal cracks 0-3mm? ${getBool(Params.observedAnyInternalCracksSmaller3mm) ? 'Yes' : 'No'}",
+        text: "Have you observed any internal cracks 0-3mm? : ${getBool(Params.observedAnyInternalCracksSmaller3mm) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 20);
 
@@ -448,7 +505,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any cracks larger than 3mm? ${getBool(Params.observedAnyInternalCracksLager3mm) ? 'Yes' : 'No'}",
+        text: "Have you observed any cracks larger than 3mm? : ${getBool(Params.observedAnyInternalCracksLager3mm) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -460,7 +517,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any cracks larger than 10mm? ${getBool(Params.observedAnyInternalCracksLager10mm) ? 'Yes' : 'No'}",
+        text: "Have you observed any cracks larger than 10mm? : ${getBool(Params.observedAnyInternalCracksLager10mm) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -472,7 +529,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed defective/cracked mortar joints? ${getBool(Params.observedDefectiveMortarJoints) ? 'Yes' : 'No'}",
+        text: "Have you observed defective/cracked mortar joints? : ${getBool(Params.observedDefectiveMortarJoints) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -484,7 +541,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed defective bricks (weathered, cracked, loose, etc)? ${getBool(Params.observedDefectiveBricks) ? 'Yes' : 'No'}",
+        text: "Have you observed defective bricks (weathered, cracked, loose, etc)? : ${getBool(Params.observedDefectiveBricks) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -496,7 +553,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Type of lintels? ${getString(Params.lintelType)}",
+        text: "Type of lintels? : ${getString(Params.lintelType).substring(4)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -508,7 +565,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any cracks above lintels? ${getBool(Params.observedAnyCracksAboveLintels) ? 'Yes' : 'No'}",
+        text: "Have you observed any cracks above lintels? : ${getBool(Params.observedAnyCracksAboveLintels) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -520,7 +577,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "What is the construction of floors on ground floor? ${getString(Params.constructionOfFloorsOnGroundFloor)}",
+        text: "What is the construction of floors on ground floor? : ${getString(Params.constructionOfFloorsOnGroundFloor)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -532,7 +589,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "On ground floor, are floors in below average condition considering the age of the property - uneven/sagging? ${getBool(Params.belowAverageGroundFloor) ? 'Yes' : 'No'}",
+        text: "On ground floor, are floors in below average condition considering the age of the property - uneven/sagging? : ${getBool(Params.belowAverageGroundFloor) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -544,7 +601,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any drainage and/or uneven pavement in vicinity of uneven ground floor or wall cracks? ${getBool(Params.observedDrainagePavement) ? 'Yes' : 'No'}",
+        text: "Have you observed any drainage and/or uneven pavement in vicinity of uneven ground floor or wall cracks? : ${getBool(Params.observedDrainagePavement) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -556,7 +613,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "What is the construction of floors on  first floor? ${getString(Params.constructionOfFloorsOnFirstFloor)}",
+        text: "What is the construction of floors on  first floor? : ${getString(Params.constructionOfFloorsOnFirstFloor)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -568,7 +625,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "On the first floor, are the floors in below average considering the age of the property - uneven/sagging? ${getBool(Params.belowAverageFirstFloor) ? 'Yes' : 'No'}",
+        text: "On the first floor, are the floors in below average considering the age of the property - uneven/sagging? : ${getBool(Params.belowAverageFirstFloor) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -580,7 +637,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Based on the internal face of gable wall and/or external elevations, what is the type of construction? ${getString(Params.internalFaceGableWall)}",
+        text: "Based on the internal face of gable wall and/or external elevations, what is the type of construction? : ${getString(Params.internalFaceGableWall)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -592,7 +649,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any movement of bay window? ${getBool(Params.observedBayWindowMovement) ? 'Yes' : 'No'}",
+        text: "Have you observed any movement of bay window? : ${getBool(Params.observedBayWindowMovement) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -604,7 +661,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any movement at junction of an extension/porch and the original building? ${getBool(Params.observedJunctionMovement) ? 'Yes' : 'No'}",
+        text: "Have you observed any movement at junction of an extension/porch and the original building? : ${getBool(Params.observedJunctionMovement) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -618,7 +675,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Is the roof sagging? ${getBool(Params.roofSagging) ? 'Yes' : 'No'}",
+        text: "Is the roof sagging? : ${getBool(Params.roofSagging) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -630,7 +687,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you inspected all rooms, including garage, roof space and all accessible areas? ${getBool(Params.inspectedAllRooms) ? 'Yes' : 'No'}",
+        text: "Have you inspected all rooms, including garage, roof space and all accessible areas? : ${getBool(Params.inspectedAllRooms) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -642,7 +699,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you recorded 1min video, taken overview and close-up photos of all defects observed? ${getBool(Params.recordedVideo) ? 'Yes' : 'No'}",
+        text: "Have you recorded 1min video, taken overview and close-up photos of all defects observed? : ${getBool(Params.recordedVideo) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -654,7 +711,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any active movement? ${getBool(Params.observedActiveMovement) ? 'Yes' : 'No'}",
+        text: "Have you observed any active movement? : ${getBool(Params.observedActiveMovement) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -666,7 +723,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Are external elevations in an acceptable condition considering the age of the property? ${getBool(Params.externalElevations) ? 'Yes' : 'No'}",
+        text: "Are external elevations in an acceptable condition considering the age of the property? : ${getBool(Params.externalElevations) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 

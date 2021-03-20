@@ -54,11 +54,11 @@ class _ReporterScreenState extends State<ReporterScreen> {
                           prefKey: Params.inspectedDate2,
                           values: Application.Employees2,
                         ),
-                        AppDatePicker(
+                        /*AppDatePicker(
                           label: "Inspected date: ",
                           prefKey: Params.inspector2,
                           isAlignedEnd: true,
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
