@@ -14,6 +14,7 @@ class Application {
   ];
 
   static List<String> Employees = [
+    "NA",
     "Robert Szymborski",
     "Daniel Barber",
     "Rob Hardman",
@@ -110,24 +111,28 @@ class Application {
   ];
 
   static List<String> LintelTypes = [
+    "NA",
     "(a) Likely timber w/arch",
     "(b) Likely timber w/ soldier course",
     "(c) Unknown – not visible on outside"
   ];
 
   static List<String> FloorConstructions = [
+    "NA",
     "Suspended",
     "Ground bearing",
     "Unknown"
   ];
 
   static List<String> FirstFloorConstructions = [
+    "NA",
     "Timber",
     "Concrete",
     "Unknown"
   ];
 
   static List<String> GableWallConstructions = [
+    "NA",
     "Load bearing masonry",
     "Concrete no fines",
     "Other"

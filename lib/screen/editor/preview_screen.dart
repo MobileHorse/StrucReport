@@ -214,9 +214,12 @@ class _PreviewScreenState extends State<PreviewScreen> {
         page: result.page,
         top: result.bounds.bottom + 10);
 
-    String inspector = PreferenceHelper.getString(Params.inspectedBy);
+    String inspector = StringUtils.naDefaultedValue(param: Params.inspectedBy);
     String secondInspector = PreferenceHelper.getString(Params.inspector2);
-    if (secondInspector.isNotEmpty) inspector += ", $secondInspector";
+    if (secondInspector.isNotEmpty) {
+      if (inspector == "NA") inspector = secondInspector;
+      else inspector += ", $secondInspector";
+    }
     result = writeChecklistRegularParagraph(
         text: "Inspected by: $inspector",
         page: result.page,
@@ -224,7 +227,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     String insepctionType = StringUtils.naDefaultedValue(param: Params.inspectionType);
     result = writeChecklistRegularParagraph(
-        text: "Type of inspection: $insepctionType}",
+        text: "Type of inspection: $insepctionType",
         page: result.page,
         top: result.bounds.bottom + 10);
     String inspectionTypeComment = PreferenceHelper.getString(Params.inspectionTypeComment);
@@ -564,8 +567,10 @@ class _PreviewScreenState extends State<PreviewScreen> {
           top: result.bounds.bottom + 6);
     }
 
+    String lintelType = StringUtils.naDefaultedValue(param: Params.lintelType);
+    if (lintelType != "NA") lintelType = lintelType.substring(4);
     result = writeChecklistRegularParagraph(
-        text: "Type of lintels? : ${getString(Params.lintelType).substring(4)}",
+        text: "Type of lintels? : $lintelType",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -589,7 +594,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "What is the construction of floors on ground floor? : ${getString(Params.constructionOfFloorsOnGroundFloor)}",
+        text: "What is the construction of floors on ground floor? : ${StringUtils.naDefaultedValue(param: Params.constructionOfFloorsOnGroundFloor)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -625,7 +630,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "What is the construction of floors on  first floor? : ${getString(Params.constructionOfFloorsOnFirstFloor)}",
+        text: "What is the construction of floors on  first floor? : ${StringUtils.naDefaultedValue(param: Params.constructionOfFloorsOnFirstFloor)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -649,7 +654,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Based on the internal face of gable wall and/or external elevations, what is the type of construction? : ${getString(Params.internalFaceGableWall)}",
+        text: "Based on the internal face of gable wall and/or external elevations, what is the type of construction? : ${StringUtils.naDefaultedValue(param: Params.internalFaceGableWall)}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
