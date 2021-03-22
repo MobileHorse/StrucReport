@@ -6,7 +6,6 @@ import 'package:strucreport/screen/editor/extra_info_screen.dart';
 import 'package:strucreport/screen/editor/general_info_screen.dart';
 import 'package:strucreport/screen/editor/photo_screen.dart';
 import 'package:strucreport/screen/editor/preview_screen.dart';
-import 'package:strucreport/screen/editor/reportor_screen.dart';
 
 class EditorScreen extends StatefulWidget {
   @override
