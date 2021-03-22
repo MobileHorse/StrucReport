@@ -5,8 +5,9 @@ class LabelWidget extends StatelessWidget {
 
   final String label;
   final double fontSize;
+  final FontWeight weight;
 
-  LabelWidget({this.label, this.fontSize = 20});
+  LabelWidget({this.label, this.fontSize = 20, this.weight = FontWeight.w700});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class LabelWidget extends StatelessWidget {
       label,
       style: TextStyle(
         fontSize: fontSize,
-        fontWeight: FontWeight.w700,
+        fontWeight: weight,
         color: NeumorphicTheme.defaultTextColor(context),
       ),
     );

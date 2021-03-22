@@ -22,11 +22,6 @@ class Application {
     "Stephen Swatman"
   ];
 
-  static List<String> Employees2 = [
-    "None",
-    ...Employees
-  ];
-
   static List<String> InspectionType = [
     "NA",
     "General Structural Inspection (GSI)",
@@ -105,7 +100,7 @@ class Application {
     "Side elevation of the property",
     "Cracked pavement",
     "Wall plaster crack",
-    "Celling plaster crack",
+    "Ceiling plaster crack",
     "Cracked render",
     "Cracked mortar joints",
     "Cracked brickwork",

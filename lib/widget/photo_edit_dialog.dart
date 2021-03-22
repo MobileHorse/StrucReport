@@ -56,7 +56,7 @@ class _PhotoEditDialogState extends State<PhotoEditDialog> {
           SizedBox(height: 30,),
           Row(
             children: [
-              LabelWidget(label: "Show in report: "),
+              LabelWidget(label: "Use standard caption: "),
               SizedBox(width: 20,),
               NeumorphicCheckbox(
                 value: inReport,

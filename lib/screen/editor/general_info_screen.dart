@@ -4,12 +4,14 @@ import 'package:strucreport/bloc/bloc.dart';
 import 'package:strucreport/config/application.dart';
 import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
+import 'package:strucreport/util/color_utils.dart';
 import 'package:strucreport/util/preference_helper.dart';
 import 'package:strucreport/util/toasts.dart';
 import 'package:strucreport/widget/app_comment_widget.dart';
 import 'package:strucreport/widget/app_date_picker.dart';
 import 'package:strucreport/widget/app_dropdown.dart';
 import 'package:strucreport/widget/app_switch_widget.dart';
+import 'package:strucreport/widget/label_widget.dart';
 import 'package:strucreport/widget/single_line_input.dart';
 
 class GeneralInfoScreen extends StatefulWidget {
@@ -20,16 +22,25 @@ class GeneralInfoScreen extends StatefulWidget {
 class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   EditorBloc bloc;
   bool _anyChimneyStacks;
+  TextEditingController _inspector2Controller;
 
   @override
   void initState() {
     super.initState();
+    _inspector2Controller = TextEditingController();
     bloc = BlocProvider.of<EditorBloc>(context);
     _anyChimneyStacks = PreferenceHelper.getBool(Params.anyChimneyStacks);
   }
 
   @override
+  void dispose() {
+    _inspector2Controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _inspector2Controller.text = PreferenceHelper.getString(Params.inspector2);
     return Column(
       children: [
         Expanded(
@@ -78,10 +89,41 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           prefKey: Params.inspectedBy,
                           values: Application.Employees,
                         ),
+                        Row(
+                          children: [
+                            Expanded(child: Container()),
+                            LabelWidget(label: "2nd inspector(optional): ", weight: FontWeight.normal,),
+                            SizedBox(width: 10,),
+                            SizedBox(
+                              width: 220,
+                              child: Neumorphic(
+                                style: NeumorphicStyle(
+                                  depth: NeumorphicTheme.embossDepth(context),
+                                  boxShape: NeumorphicBoxShape.roundRect(BorderRadius.circular(8)),
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                                child: TextField(
+                                  controller: _inspector2Controller,
+                                  onChanged: (value) async {
+                                    await PreferenceHelper.setString(Params.inspector2, value);
+                                  },
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: ColorUtils.textColorByTheme(context)
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration.collapsed(hintStyle: TextStyle(fontSize: 20, color: NeumorphicTheme.defaultTextColor(context))),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 20,),
                         AppDropdownWidget(
                           label: "Type of inspection: ",
                           prefKey: Params.inspectionType,
                           values: Application.InspectionType,
+                          width: 360,
                         ),
                         AppCommentWidget(
                           prefKey: Params.inspectionTypeComment,

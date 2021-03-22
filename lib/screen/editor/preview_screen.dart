@@ -216,7 +216,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     String inspector = PreferenceHelper.getString(Params.inspectedBy);
     String secondInspector = PreferenceHelper.getString(Params.inspector2);
-    if (secondInspector.isNotEmpty && secondInspector != "None") inspector += ", $secondInspector";
+    if (secondInspector.isNotEmpty) inspector += ", $secondInspector";
     result = writeChecklistRegularParagraph(
         text: "Inspected by: $inspector",
         page: result.page,

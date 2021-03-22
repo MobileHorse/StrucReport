@@ -9,9 +9,9 @@ class AppDropdownWidget extends StatefulWidget {
 
   final String label, prefKey;
   final List<String> values;
-  final double padding, marginBottom;
+  final double padding, marginBottom, width;
 
-  AppDropdownWidget({this.label = "", this.prefKey, this.values, this.padding = 20, this.marginBottom = 20});
+  AppDropdownWidget({this.label = "", this.prefKey, this.values, this.padding = 20, this.marginBottom = 20, this.width = 200});
 
   @override
   _AppDropdownWidgetState createState() => _AppDropdownWidgetState();
@@ -61,6 +61,15 @@ class _AppDropdownWidgetState extends State<AppDropdownWidget> {
               },
               dropdownColor: NeumorphicTheme.baseColor(context),
               underline: Container(),
+              selectedItemBuilder: (BuildContext context) {
+                return widget.values.map<Widget>((String item) {
+                  return Container(
+                      alignment: Alignment.centerRight,
+                      width: widget.width,
+                      child: Text(item, textAlign: TextAlign.end)
+                  );
+                }).toList();
+              },
               items: widget.values.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
