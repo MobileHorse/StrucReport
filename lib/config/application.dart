@@ -18,7 +18,8 @@ class Application {
     "Daniel Barber",
     "Rob Hardman",
     "Larisa Florian",
-    "Muhammed Jagot"
+    "Muhammed Jagot",
+    "Stephen Swatman"
   ];
 
   static List<String> Employees2 = [
@@ -27,11 +28,13 @@ class Application {
   ];
 
   static List<String> InspectionType = [
+    "NA",
     "General Structural Inspection (GSI)",
     "Specific Structural Inspection (SSI)"
   ];
 
   static List<String> PropertyType = [
+    "NA",
     "Detached",
     "Semi-detached",
     "Terraced",
@@ -39,6 +42,7 @@ class Application {
   ];
 
   static List<String> PresentAtSite = [
+    "NA",
     "Vendor",
     "Buyer",
     "Agent",
@@ -47,17 +51,20 @@ class Application {
   ];
 
   static List<String> ExternalWallsConstruction = [
+    "NA",
     "Solid",
     "Cavity"
   ];
 
-  static List<String> CoverOfRoor = [
+  static List<String> CoverOfRoof = [
+    "NA",
     "Tiles",
     "Slates",
     "Other"
   ];
 
   static List<String> NumberOfRooms = [
+    "NA",
     "1-Bedroom property",
     "2-Bedroom property",
     "3-Bedroom property",
@@ -65,6 +72,7 @@ class Application {
   ];
 
   static List<String> Weather = [
+    "NA",
     "Overcast",
     "Sunny",
     "Rainy"

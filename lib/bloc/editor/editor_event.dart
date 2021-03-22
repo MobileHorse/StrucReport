@@ -12,8 +12,5 @@ class EditorPhotoNextEvent extends EditorEvent {
 class EditorExtraNextEvent extends EditorEvent {
 }
 
-class EditorReporterNextEvent extends EditorEvent {
-}
-
 class EditorPrevEvent extends EditorEvent {
 }

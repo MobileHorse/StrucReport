@@ -59,8 +59,6 @@ class _EditorScreenState extends State<EditorScreen> {
                             return PhotoScreen();
                           } else if (state is EditorExtraState) {
                             return ExtraInfoScreen();
-                          } else if (state is EditorReporterState) {
-                            return ReporterScreen();
                           } else if (state is EditorPreviewState) {
                             return PreviewScreen();
                           } else {
@@ -108,13 +106,11 @@ class _EditorScreenState extends State<EditorScreen> {
               builder: (context, state) {
                 String title = "";
                 if (state is EditorGeneralInfoState) {
-                  title = "General Info";
+                  title = "General Information";
                 } else if (state is EditorPhotoState) {
                   title = "Photos";
                 } else if (state is EditorExtraState) {
-                  title = "Extra Info";
-                } else if (state is EditorReporterState) {
-                  title = "Inspector";
+                  title = "Additional Information";
                 } else if (state is EditorPreviewState) {
                   title = "Send";
                 } else {

@@ -87,8 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       builder: (context) {
                         return ConfirmDialog(
                           message: "Do you want to continue from drafts?",
-                          btnYes: "Yes, continue drafts",
-                          btnNo: "No, start scratch",
+                          btnYes: "Yes, continue draft",
+                          btnNo: "No, start new",
                           btnCancel: "Cancel",
                           onYes: () {
                             Navigator.pushNamed(context, Routes.editor);

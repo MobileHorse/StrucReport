@@ -125,7 +125,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                         AppDropdownWidget(
                           label: "What is covering of roof: ",
                           prefKey: Params.coverOfRoof,
-                          values: Application.CoverOfRoor,
+                          values: Application.CoverOfRoof,
                         ),
                         AppCommentWidget(
                           prefKey: Params.coverOfRoofComment,

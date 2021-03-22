@@ -222,8 +222,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
         page: result.page,
         top: result.bounds.bottom + 10);
 
+    String insepctionType = StringUtils.naDefaultedValue(param: Params.inspectionType);
     result = writeChecklistRegularParagraph(
-        text: "Inspection type: ${PreferenceHelper.getString(Params.inspectionType)}",
+        text: "Type of inspection: $insepctionType}",
         page: result.page,
         top: result.bounds.bottom + 10);
     String inspectionTypeComment = PreferenceHelper.getString(Params.inspectionTypeComment);
@@ -246,8 +247,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
           top: result.bounds.bottom + 6);
     }
 
+    String propertyType = StringUtils.naDefaultedValue(param: Params.propertyType);
     result = writeChecklistRegularParagraph(
-        text: "Property type: ${PreferenceHelper.getString(Params.propertyType)}",
+        text: "Property type: $propertyType",
         page: result.page,
         top: result.bounds.bottom + 10);
     String propertyTypeComment = PreferenceHelper.getString(Params.propertyTypeComment);
@@ -258,8 +260,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
           top: result.bounds.bottom + 6);
     }
 
+    String presentAtSite = StringUtils.naDefaultedValue(param: Params.presentAtSite);
     result = writeChecklistRegularParagraph(
-        text: "Present at site: ${PreferenceHelper.getString(Params.presentAtSite)}",
+        text: "Present at site: $presentAtSite",
         page: result.page,
         top: result.bounds.bottom + 10);
     String presentAtSiteComment = PreferenceHelper.getString(Params.presentAtSiteComment);
@@ -287,8 +290,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
         page: result.page,
         top: result.bounds.bottom + 10);
 
+    String externalWallsConstruction = StringUtils.naDefaultedValue(param: Params.externalWallsConstruction);
     result = writeChecklistRegularParagraph(
-        text: "External walls construction: ${PreferenceHelper.getString(Params.externalWallsConstruction)}",
+        text: "External walls construction: $externalWallsConstruction",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -301,7 +305,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "What is covering of roof: ${PreferenceHelper.getString(Params.coverOfRoof)}",
+        text: "What is covering of roof: ${StringUtils.naDefaultedValue(param: Params.coverOfRoof)}",
         page: result.page,
         top: result.bounds.bottom + 10);
     String roofCoverComment = PreferenceHelper.getString(Params.coverOfRoofComment);
@@ -313,7 +317,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "How many rooms/bedrooms: ${PreferenceHelper.getString(Params.roomNumber)}",
+        text: "How many rooms/bedrooms: ${StringUtils.naDefaultedValue(param: Params.roomNumber)}",
         page: result.page,
         top: result.bounds.bottom + 10);
     String roomNumberComment = PreferenceHelper.getString(Params.roomNumberComment);
@@ -325,7 +329,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Weather: ${PreferenceHelper.getString(Params.weather)}",
+        text: "Weather: ${StringUtils.naDefaultedValue(param: Params.weather)}",
         page: result.page,
         top: result.bounds.bottom + 10);
     String weatherComment = PreferenceHelper.getString(Params.weatherComment);
@@ -470,11 +474,11 @@ class _PreviewScreenState extends State<PreviewScreen> {
       }
     }
 
-    // insert extra information
+    // insert additional information
     PdfPage page3 = document.pages.add();
 
     result = PdfTextElement(
-        text: "3) Extra Information",
+        text: "3) Additional Information",
         brush: PdfBrushes.black,
         font: titleFont,
         format: PdfStringFormat(alignment: PdfTextAlignment.left))
@@ -484,7 +488,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
 
     tableContent = _addTableOfContents(
         contentPage,
-        '3) Extra Information',
+        '3) Additional Information',
         Rect.fromLTWH(20, 200, result.page.getClientSize().width - 40,
             result.page.getClientSize().height),
         document.pages.indexOf(page3) + 1,

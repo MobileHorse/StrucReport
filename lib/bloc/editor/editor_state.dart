@@ -14,8 +14,5 @@ class EditorPhotoState extends EditorState {
 class EditorExtraState extends EditorState {
 }
 
-class EditorReporterState extends EditorState {
-}
-
 class EditorPreviewState extends EditorState {
 }

@@ -1,3 +1,5 @@
+import 'preference_helper.dart';
+
 class StringUtils {
   static String ellipsedName(String name) {
     var buffer = StringBuffer();
@@ -14,5 +16,11 @@ class StringUtils {
       return false;
     }
     return double.parse(s, (e) => null) != null;
+  }
+
+  static String naDefaultedValue({String param}) {
+    String value = PreferenceHelper.getString(param);
+    if (value.isEmpty) value = "NA";
+    return value;
   }
 }

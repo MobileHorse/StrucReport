@@ -12,8 +12,6 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       yield* _mapEditorPhotoNextEventToState(event);
     } else if (event is EditorExtraNextEvent) {
       yield* _mapEditorExtraNextEventToState(event);
-    } else if (event is EditorReporterNextEvent) {
-      yield* _mapEditorReporterNextEventToState(event);
     } else if (event is EditorPrevEvent) {
       yield* _mapEditorPrevEventToState(event);
     }
@@ -31,11 +29,6 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
 
   Stream<EditorState> _mapEditorExtraNextEventToState(
       EditorExtraNextEvent event) async* {
-    yield EditorReporterState();
-  }
-
-  Stream<EditorState> _mapEditorReporterNextEventToState(
-      EditorReporterNextEvent event) async* {
     yield EditorPreviewState();
   }
 
@@ -46,10 +39,8 @@ class EditorBloc extends Bloc<EditorEvent, EditorState> {
       yield EditorGeneralInfoState();
     } else if (state is EditorExtraState) {
       yield EditorPhotoState();
-    } else if (state is EditorReporterState) {
-      yield EditorExtraState();
     } else if (state is EditorPreviewState) {
-      yield EditorReporterState();
+      yield EditorExtraState();
     }
   }
 }
