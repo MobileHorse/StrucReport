@@ -201,6 +201,9 @@ class _PhotoScreenState extends State<PhotoScreen>
         if (item == photos[i]) break;
       }
       caption = "Photo $index - " + item.caption;
+      if (item.comment.isNotEmpty) caption += "\n${item.comment}";
+    } else {
+      caption = item.comment;
     }
     return Stack(
       children: [
@@ -246,6 +249,7 @@ class _PhotoScreenState extends State<PhotoScreen>
                         category: item.category,
                         inReport: item.inReport,
                         caption: item.caption,
+                        comment: item.comment,
                         onOK: (value) {
                           setState(() {
                             photos[photos.indexOf(item)] = value;

@@ -148,7 +148,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     final PdfPage contentPage = section.pages.add();
 
     //Create a header template and draw a text.
-    section.template.top = await generateHeader(contentPage, isPdf: true);
+    section.template.top = await generateChecklistHeader(contentPage);
 
     //Create a footer template and draw a text.
     section.template.bottom = generateFooter(contentPage);
@@ -452,10 +452,18 @@ class _PreviewScreenState extends State<PreviewScreen> {
           double top = count % 2 == 0 ? 100 : 396;
           page2.graphics
               .drawImage(PdfBitmap(bytes), Rect.fromLTWH(140, top, 275, 206));
+          String comment = "";
           if (photo.inReport) {
-            Size captionSize = regularFont.measureString(photo.caption);
+            comment = photo.caption;
+          }
+          if (photo.comment.isNotEmpty) {
+            if (comment.isNotEmpty) comment += " - ";
+            comment += photo.comment;
+          }
+          if (comment.isNotEmpty) {
+            Size captionSize = regularFont.measureString(comment);
             PdfTextElement(
-                text: photo.caption,
+                text: comment,
                 brush: PdfBrushes.black,
                 font: regularFont,
                 format: PdfStringFormat(alignment: PdfTextAlignment.left))
@@ -1829,6 +1837,98 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
     print("========= Send Email ===============");
     print(platformResponse);
+  }
+
+  Future<PdfPageTemplateElement> generateChecklistHeader(PdfPage contentPage) async {
+    PdfBorders noBorder = PdfBorders(
+        left: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        top: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        bottom: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        right: PdfPen(PdfColor(0, 0, 0, 0), width: 0));
+    PdfBorders bottomBorder = PdfBorders(
+        left: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        top: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        bottom: PdfPen(PdfColor(0, 0, 0), width: 1),
+        right: PdfPen(PdfColor(0, 0, 0, 0), width: 0));
+    PdfBorders rightBorder = PdfBorders(
+        left: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        top: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        bottom: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+        right: PdfPen(PdfColor(0, 0, 0), width: 1));
+
+    PdfPageTemplateElement headerElement = PdfPageTemplateElement(
+        const Rect.fromLTWH(0, 0, 555, 120), contentPage);
+    headerElement.graphics.setTransparency(1);
+    headerElement.graphics.drawImage(
+        PdfBitmap(await _readImageData("pdf_logo.png")),
+        Rect.fromLTWH(5, 5, 148, 44));
+    headerElement.graphics.drawString(
+        "Head Office:\r\nLeicester Office: 6 Frederick St, Units 6 & 7 \r\nWigston LE18 1PJ, Tel: 0116 452 0511 \r\n\r\nE: info@simplifyengineering.co.uk",
+        PdfStandardFont(PdfFontFamily.helvetica, 8),
+        bounds: Rect.fromLTWH(5, 60, 160, 80));
+
+    //Create a grid
+    PdfGrid grid = PdfGrid();
+
+    //Adds the columns to the grid
+    grid.columns.add(count: 3);
+    grid.columns[0].width = 170;
+    grid.columns[2].width = 80;
+
+    //Add rows to grid. Set the cells style
+    PdfGridRow row1 = grid.rows.add();
+    row1.cells[0].value = "";
+
+    // center column
+    row1.cells[1].style = PdfGridCellStyle(
+        borders: PdfBorders(
+            left: PdfPen(PdfColor(0, 0, 0, 0), width: 0),
+            top: PdfPen(PdfColor(0, 0, 0), width: 1),
+            bottom: PdfPen(PdfColor(0, 0, 0), width: 1),
+            right: PdfPen(PdfColor(0, 0, 0), width: 1)));
+
+    PdfGrid grid2 = PdfGrid();
+    grid2.columns.add(count: 1);
+
+    PdfGridRow row21 = grid2.rows.add();
+    row21.cells[0].style = PdfGridCellStyle(borders: bottomBorder);
+    row21.cells[0].value = generateCell("Property Address:", PreferenceHelper.getString(Params.address));
+
+    PdfGridRow row22 = grid2.rows.add();
+    row22.cells[0].style = PdfGridCellStyle(borders: bottomBorder);
+    row22.cells[0].value = generateCell("Description:", "Inspection Checklist");
+
+    PdfGridRow row23 = grid2.rows.add();
+    row23.cells[0].style = PdfGridCellStyle(borders: noBorder);
+    String inspector = PreferenceHelper.getString(Params.inspectedBy);
+    String secondInspector = PreferenceHelper.getString(Params.inspector2);
+    if (secondInspector.isNotEmpty) inspector += ", $secondInspector";
+    row23.cells[0].value = generateCell("Inspected by:", inspector);
+
+    row1.cells[1].value = grid2;
+
+    PdfGrid grid3 = PdfGrid();
+    grid3.columns.add(count: 1);
+
+    PdfGridRow row31 = grid3.rows.add();
+    row31.cells[0].style = PdfGridCellStyle(borders: bottomBorder);
+    row31.cells[0].value = generateCell("Job Ref.", getString(Params.projectNumber));
+
+    PdfGridRow row32 = grid3.rows.add();
+    row32.cells[0].style = PdfGridCellStyle(borders: bottomBorder);
+    row32.cells[0].value = generateCell(
+        " ", " ");
+
+    PdfGridRow row33 = grid3.rows.add();
+    row33.cells[0].style = PdfGridCellStyle(borders: noBorder);
+    row33.cells[0].value = generateCell(
+        "Date:", DateFormat('dd/MM/yyyy').format(getDate(Params.inspectedDate)));
+
+    row1.cells[2].value = grid3;
+    grid.draw(
+        graphics: headerElement.graphics,
+        bounds: const Rect.fromLTWH(0, 0, 0, 0));
+    return headerElement;
   }
 
   Future<PdfPageTemplateElement> generateHeader(PdfPage contentPage, {bool isPdf = false}) async {

@@ -11,7 +11,7 @@ class AppDropdownWidget extends StatefulWidget {
   final List<String> values;
   final double padding, marginBottom, width;
 
-  AppDropdownWidget({this.label = "", this.prefKey, this.values, this.padding = 20, this.marginBottom = 20, this.width = 200});
+  AppDropdownWidget({this.label = "", this.prefKey, this.values, this.padding = 20, this.marginBottom = 20, this.width = 240});
 
   @override
   _AppDropdownWidgetState createState() => _AppDropdownWidgetState();

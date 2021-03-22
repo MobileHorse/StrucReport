@@ -8,8 +8,8 @@ class Application {
   static String photoElementDelimiter = "#*__*#";
 
   static List<String> Emails = [
-    "robert.simplify@gmail.com",
-    /*"selivestrovdanil47@gmail.com"*/
+    /*"robert.simplify@gmail.com",*/
+    "selivestrovdanil47@gmail.com"
 
   ];
 
