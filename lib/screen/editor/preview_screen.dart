@@ -217,7 +217,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     String inspector = StringUtils.naDefaultedValue(param: Params.inspectedBy);
     String secondInspector = PreferenceHelper.getString(Params.inspector2);
     if (secondInspector.isNotEmpty) {
-      if (inspector == "NA") inspector = secondInspector;
+      if (inspector == "N/A") inspector = secondInspector;
       else inspector += ", $secondInspector";
     }
     result = writeChecklistRegularParagraph(
@@ -568,7 +568,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     String lintelType = StringUtils.naDefaultedValue(param: Params.lintelType);
-    if (lintelType != "NA") lintelType = lintelType.substring(4);
+    if (lintelType != "N/A") lintelType = lintelType.substring(4);
     result = writeChecklistRegularParagraph(
         text: "Type of lintels? : $lintelType",
         page: result.page,
@@ -791,8 +791,8 @@ class _PreviewScreenState extends State<PreviewScreen> {
     print('$path/$filename');
 
     //// Email Send
-    final Email email = Email(
-      body: "StrucReport",
+    /*final Email email = Email(
+      body: "StrucChecklist",
       subject: "New checklist created",
       recipients: Application.Emails,
       attachmentPaths: ['$path/$filename'],
@@ -808,7 +808,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
       platformResponse = error.toString();
     }
     print("========= Send Email ===============");
-    print(platformResponse);
+    print(platformResponse);*/
   }
 
   Future<void> generateReport() async {

@@ -1,6 +1,6 @@
 # strucreport
 
-StrucReport Application
+StrucChecklist Application
 
 ## Getting Started
 

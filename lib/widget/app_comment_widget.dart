@@ -10,7 +10,7 @@ class AppCommentWidget extends StatefulWidget {
   final String hint, prefKey, label;
   final int maxLines;
 
-  AppCommentWidget({this.label = "", this.hint = "Comment", this.prefKey, this.maxLines = 3});
+  AppCommentWidget({this.label = "", this.hint = "", this.prefKey, this.maxLines = 3});
 
   @override
   _AppCommentWidgetState createState() => _AppCommentWidgetState();

@@ -20,7 +20,7 @@ class StringUtils {
 
   static String naDefaultedValue({String param}) {
     String value = PreferenceHelper.getString(param);
-    if (value.isEmpty) value = "NA";
+    if (value.isEmpty) value = "N/A";
     return value;
   }
 }

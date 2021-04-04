@@ -14,7 +14,7 @@ class Application {
   ];
 
   static List<String> Employees = [
-    "NA",
+    "N/A",
     "Robert Szymborski",
     "Daniel Barber",
     "Rob Hardman",
@@ -24,13 +24,13 @@ class Application {
   ];
 
   static List<String> InspectionType = [
-    "NA",
+    "N/A",
     "General Structural Inspection (GSI)",
     "Specific Structural Inspection (SSI)"
   ];
 
   static List<String> PropertyType = [
-    "NA",
+    "N/A",
     "Detached",
     "Semi-detached",
     "Terraced",
@@ -38,7 +38,7 @@ class Application {
   ];
 
   static List<String> PresentAtSite = [
-    "NA",
+    "N/A",
     "Vendor",
     "Buyer",
     "Agent",
@@ -47,20 +47,20 @@ class Application {
   ];
 
   static List<String> ExternalWallsConstruction = [
-    "NA",
+    "N/A",
     "Solid",
     "Cavity"
   ];
 
   static List<String> CoverOfRoof = [
-    "NA",
+    "N/A",
     "Tiles",
     "Slates",
     "Other"
   ];
 
   static List<String> NumberOfRooms = [
-    "NA",
+    "N/A",
     "1-Bedroom property",
     "2-Bedroom property",
     "3-Bedroom property",
@@ -68,7 +68,7 @@ class Application {
   ];
 
   static List<String> Weather = [
-    "NA",
+    "N/A",
     "Overcast",
     "Sunny",
     "Rainy"
@@ -111,21 +111,21 @@ class Application {
   ];
 
   static List<String> LintelTypes = [
-    "NA",
+    "N/A",
     "(a) Likely timber w/arch",
     "(b) Likely timber w/ soldier course",
     "(c) Unknown – not visible on outside"
   ];
 
   static List<String> FloorConstructions = [
-    "NA",
+    "N/A",
     "Suspended",
     "Ground bearing",
     "Unknown"
   ];
 
   static List<String> FirstFloorConstructions = [
-    "NA",
+    "N/A",
     "Timber",
     "Concrete",
     "Unknown"

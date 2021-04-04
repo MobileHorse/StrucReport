@@ -147,7 +147,7 @@ class _PhotoScreenState extends State<PhotoScreen>
               width: 20,
             ),
             Expanded(
-              child: LabelWidget(label: category),
+              child: LabelWidget(label: category + ":"),
             ),
             SizedBox(
               width: 20,
@@ -200,7 +200,7 @@ class _PhotoScreenState extends State<PhotoScreen>
         }
         if (item == photos[i]) break;
       }
-      caption = "Photo $index - " + item.caption;
+      caption = item.caption;
       if (item.comment.isNotEmpty) caption += "\n${item.comment}";
     } else {
       caption = item.comment;
