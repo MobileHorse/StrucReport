@@ -20,7 +20,8 @@ class Application {
     "Rob Hardman",
     "Larisa Florian",
     "Muhammed Jagot",
-    "Stephen Swatman"
+    "Stephen Swatman",
+    "Tim Bolojan"
   ];
 
   static List<String> InspectionType = [
@@ -31,10 +32,22 @@ class Application {
 
   static List<String> PropertyType = [
     "N/A",
-    "Detached",
-    "Semi-detached",
-    "Terraced",
-    "End-terraced"
+    "Detached house",
+    "Semi-detached house",
+    "Terraced house",
+    "End-terraced house",
+    "Residential multi-unit",
+    "Commercial portal frame",
+    "Commercial masonry"
+  ];
+
+  static List<String> PurposeOfSiteVisit = [
+    "N/A",
+    "Pre-purchase report",
+    "Alterations without plans – indicative structural plan & calculations",
+    "Alterations with plans – structural mark-ups & calculations",
+    "New construction",
+    "Site visit only to define requirements"
   ];
 
   static List<String> PresentAtSite = [
@@ -67,6 +80,13 @@ class Application {
     "Other"
   ];
 
+  static List<String> AnyReportDrawingSketch = [
+    "N/A",
+    "Surveyor’s report provided",
+    "Architectural drawings provided",
+    "Sketches/ indicative drawings provided"
+  ];
+
   static List<String> Weather = [
     "N/A",
     "Overcast",
@@ -75,8 +95,10 @@ class Application {
   ];
 
   static List<String> PhotoCategories = [
+    "Appointment notes screenshot",
     "Front elevation overview",
-    "Front elevation defects photos",
+    "Front elevation defect photos",
+    "Continuation, front elevation defect photos",
     "Bay window, junction of bay window and front brickwork",
     "Roof overview photos",
     "Chimney & any defects photos",
@@ -85,14 +107,23 @@ class Application {
     "Left side elevation photos",
     "Left side elevation defects photos",
     "Rear elevation overview",
-    "Rear side elevation defects photos",
+    "Rear elevation defect photos",
+    "Continuation, rear elevation defect photos",
+    "Eternal cracks above windows/doors photos",
+    "Internal cracks above windows/doors photos",
     "Any extensions, measuring tape against wall to show thickness",
     "Site overview photos of any trees, retaining walls, slope/hill, etc",
-    "Internal plaster cracks ceiling (x3) and wall (x3) and any other defects observed",
+    "Continuation, site overview photos",
+    "Internal cracks",
+    "Continuation, internal cracks photos",
+    "Internal defects",
+    "Continuation, internal defects photos",
     "Internal uneven floors, ceilings",
     "Interior roof space overview photos & gable wall",
     "Interior roof space defect photos",
-    "Misc. photos"
+    "Misc. photos",
+    "If applicable, floorboards or joists span photos",
+    "If applicable, plan screenshot"
   ];
 
   static List<String> PhotoCaptions = [
@@ -132,10 +163,28 @@ class Application {
   ];
 
   static List<String> GableWallConstructions = [
-    "NA",
+    "N/A",
     "Load bearing masonry",
     "Concrete no fines",
     "Other"
+  ];
+
+  static List<String> SizeLargestInternalCrack = [
+    "N/A",
+    "0 - Hairline cracks less than 0.1mm",
+    "1 - Fine cracks of up to 1mm",
+    "2 - Crack widths up to 5mm",
+    "3 - Crack widths of 5 to 15mm (or several of e.g. 3mm)",
+    "4 - Extensive damage, cracks 15 to 25mm"
+  ];
+
+  static List<String> SizeLargestExternalCrack = [
+    "N/A",
+    "0 - Hairline cracks less than 0.1mm",
+    "1 - Fine cracks of up to 1mm",
+    "2 - Crack widths up to 5mm",
+    "3 - Crack widths of 5 to 15mm (or several of e.g. 3mm)",
+    "4 - Extensive damage, cracks 15 to 25mm"
   ];
 }
 

@@ -21,7 +21,7 @@ class GeneralInfoScreen extends StatefulWidget {
 
 class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
   EditorBloc bloc;
-  bool _anyChimneyStacks;
+  bool _anyChimneyStacks, _isPropertyOnHill;
   TextEditingController _inspector2Controller;
 
   @override
@@ -30,6 +30,7 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
     _inspector2Controller = TextEditingController();
     bloc = BlocProvider.of<EditorBloc>(context);
     _anyChimneyStacks = PreferenceHelper.getBool(Params.anyChimneyStacks);
+    _isPropertyOnHill = PreferenceHelper.getBool(Params.propertyOnHill);
   }
 
   @override
@@ -60,25 +61,6 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                         SizedBox(
                           height: 8,
                           width: double.infinity,
-                        ),
-                        SingleLineInput(
-                          label: "Name of client:",
-                          prefKey: Params.clientName,
-                        ),
-                        SingleLineInput(
-                          label: "Project number:",
-                          prefKey: Params.projectNumber,
-                        ),
-                        SingleLineInput(
-                          label: "Address:",
-                          prefKey: Params.address,
-                        ),
-                        AppSwitchWidget(
-                          label: "Surveyor’s report available:",
-                          prefKey: Params.surveyorReportAvailable,
-                        ),
-                        AppCommentWidget(
-                          prefKey: Params.surveyorReportAvailableComment,
                         ),
                         AppDatePicker(
                           label: "Date: ",
@@ -118,19 +100,30 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                             )
                           ],
                         ),
-                        SizedBox(height: 20,),
+                        SingleLineInput(
+                          label: "Project number:",
+                          prefKey: Params.projectNumber,
+                        ),
+                        SingleLineInput(
+                          label: "Client's name:",
+                          prefKey: Params.clientName,
+                        ),
+                        SingleLineInput(
+                          label: "Address:",
+                          prefKey: Params.address,
+                        ),
+                        AppCommentWidget(
+                          label: "Specific request to check: ",
+                          prefKey: Params.specificRequestToCheck,
+                        ),
                         AppDropdownWidget(
-                          label: "Type of inspection: ",
-                          prefKey: Params.inspectionType,
-                          values: Application.InspectionType,
-                          width: 360,
+                          label: "Purpose of site visit: ",
+                          prefKey: Params.purposeOfSiteVisit,
+                          values: Application.PurposeOfSiteVisit,
+                          width: 400,
                         ),
                         AppCommentWidget(
-                          prefKey: Params.inspectionTypeComment,
-                        ),
-                        AppCommentWidget(
-                          label: "Client's Brief: ",
-                          prefKey: Params.clientBrief,
+                          prefKey: Params.purposeOfSiteVisitComment,
                         ),
                         AppDropdownWidget(
                           label: "Type of property: ",
@@ -173,12 +166,20 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                           prefKey: Params.coverOfRoofComment,
                         ),
                         AppDropdownWidget(
-                          label: "How many rooms/bedrooms: ",
+                          label: "Number of bedrooms: ",
                           prefKey: Params.roomNumber,
                           values: Application.NumberOfRooms,
                         ),
                         AppCommentWidget(
                           prefKey: Params.roomNumberComment,
+                        ),
+                        AppDropdownWidget(
+                          label: "Are there any report, drawings or sketches available: ",
+                          prefKey: Params.anyReportDrawingsSketchAvailable,
+                          values: Application.AnyReportDrawingSketch,
+                        ),
+                        AppCommentWidget(
+                          prefKey: Params.anyReportDrawingsSketchAvailableComment,
                         ),
                         AppDropdownWidget(
                           label: "Weather: ",
@@ -188,10 +189,19 @@ class _GeneralInfoScreenState extends State<GeneralInfoScreen> {
                         AppCommentWidget(
                           prefKey: Params.weatherComment,
                         ),
-                        AppCommentWidget(
-                          label: "Is the property on a hill, slope, any trees in proximity?: ",
-                          prefKey: Params.propertyOnHillComment,
+                        AppSwitchWidget(
+                          label: "Is the property on a hill, slope or are there trees nearby? ",
+                          prefKey: Params.propertyOnHill,
+                          onChange: (val) {
+                            setState(() {
+                              _isPropertyOnHill = val;
+                            });
+                          },
                         ),
+                        _isPropertyOnHill ? AppCommentWidget(
+                          label: "Take overview and close-up photos to illustrate it, provide comments:",
+                          prefKey: Params.propertyOnHillComment,
+                        ) : Container(),
                         AppSwitchWidget(
                           label: "Any chimney stacks?",
                           prefKey: Params.anyChimneyStacks,

@@ -3,6 +3,7 @@ class Params {
   static final String clientName = "clientName";
   static final String projectNumber = "projectNumber";
   static final String address = "address";
+  static final String specificRequestToCheck = "specificRequestToCheck";
   static final String surveyorReportAvailable = "surveyorReportAvailable";
   static final String surveyorReportAvailableComment = "surveyorReportAvailableComment";
   static final String inspectedBy = "inspectedBy";
@@ -13,6 +14,8 @@ class Params {
   static final String propertyType = "propertyType";
   static final String propertyTypeComment = "propertyTypeComment";
   static final String presentAtSite = "presentAtSite";
+  static final String purposeOfSiteVisit = "purposeOfSiteVisit";
+  static final String purposeOfSiteVisitComment = "purposeOfSiteVisitComment";
   static final String presentAtSiteComment = "presentAtSiteComment";
   static final String personAtSiteComment = "personAtSiteComment";
   static final String estimatedConstructionDecade = "estimatedConstructionDecade";
@@ -22,8 +25,11 @@ class Params {
   static final String coverOfRoofComment = "coverOfRoofComment";
   static final String roomNumber = "roomNumber";
   static final String roomNumberComment = "roomNumberComment";
+  static final String anyReportDrawingsSketchAvailable = "anyReportDrawingsSketchAvailable";
+  static final String anyReportDrawingsSketchAvailableComment = "anyReportDrawingsSketchAvailableComment";
   static final String weather = "weather";
   static final String weatherComment = "weatherComment";
+  static final String propertyOnHill = "propertyOnHill";
   static final String propertyOnHillComment = "propertyOnHillComment";
   static final String anyChimneyStacks = "anyChimneyStacks";
   static final String chimneyMaintenance = "chimneyMaintenance";
@@ -73,6 +79,10 @@ class Params {
   static final String observedActiveMovement = "recordedVideo";
   static final String observedActiveMovementComment = "observedActiveMovementComment";
   static final String externalElevations = "externalElevations";
+  static final String sizeLargestInternalCrack = "sizeLargestInternalCrack";
+  static final String sizeLargestInternalCrackComment = "sizeLargestInternalCrackComment";
+  static final String sizeLargestExternalCrack = "sizeLargestExternalCrack";
+  static final String sizeLargestExternalCrackComment = "sizeLargestExternalCrackComment";
   static final String otherInformation = "otherInformation";
 
   // photos

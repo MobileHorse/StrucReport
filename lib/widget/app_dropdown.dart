@@ -73,7 +73,10 @@ class _AppDropdownWidgetState extends State<AppDropdownWidget> {
               items: widget.values.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
-                  child: Text(value),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    child: Text(value),
+                  ),
                 );
               }).toList(),
             )

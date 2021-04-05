@@ -5,6 +5,7 @@ import 'package:strucreport/config/application.dart';
 import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
 import 'package:strucreport/widget/app_comment_widget.dart';
+import 'package:strucreport/widget/app_dropdown.dart';
 import 'package:strucreport/widget/app_dropdown_comment_widget.dart';
 import 'package:strucreport/widget/app_switch_comment_widget.dart';
 import 'package:strucreport/widget/app_switch_widget.dart';
@@ -46,21 +47,6 @@ class _ExtraInfoScreenState extends State<ExtraInfoScreen> {
                           width: double.infinity,
                         ),
                         AppSwitchCommentWidget(
-                          label: "Have you observed any internal cracks 0-3mm?",
-                          prefKeySwitch: Params.observedAnyInternalCracksSmaller3mm,
-                          prefKeyComment: Params.observedAnyInternalCracksSmaller3mmComment,
-                        ),
-                        AppSwitchCommentWidget(
-                          label: "Have you observed any cracks larger than 3mm?",
-                          prefKeySwitch: Params.observedAnyInternalCracksLager3mm,
-                          prefKeyComment: Params.observedAnyInternalCracksLager3mmComment,
-                        ),
-                        AppSwitchCommentWidget(
-                          label: "Have you observed any cracks larger than 10mm?",
-                          prefKeySwitch: Params.observedAnyInternalCracksLager10mm,
-                          prefKeyComment: Params.observedAnyInternalCracksLager10mmComment,
-                        ),
-                        AppSwitchCommentWidget(
                           label: "Have you observed defective/cracked mortar joints?",
                           prefKeySwitch: Params.observedDefectiveMortarJoints,
                           prefKeyComment: Params.observedDefectiveMortarJointsComment,
@@ -69,12 +55,6 @@ class _ExtraInfoScreenState extends State<ExtraInfoScreen> {
                           label: "Have you observed defective bricks (weathered, cracked, loose, etc)?",
                           prefKeySwitch: Params.observedDefectiveBricks,
                           prefKeyComment: Params.observedDefectiveBricksComment,
-                        ),
-                        AppDropdownCommentWidget(
-                          label: "Type of lintels?",
-                          values: Application.LintelTypes,
-                          prefKeyDropdown: Params.lintelType,
-                          prefKeyComment: Params.lintelTypeComment,
                         ),
                         AppSwitchCommentWidget(
                           label: "Have you observed any cracks above lintels?",
@@ -135,7 +115,7 @@ class _ExtraInfoScreenState extends State<ExtraInfoScreen> {
                           prefKeyComment: Params.inspectedAllRoomsComment,
                         ),
                         AppSwitchCommentWidget(
-                          label: "Have you recorded 1min video, taken overview and close-up photos of all defects observed?",
+                          label: "Have you taken overview and close-up photos of all defects observed?",
                           prefKeySwitch: Params.recordedVideo,
                           prefKeyComment: Params.recordedVideoComment,
                         ),
@@ -147,6 +127,18 @@ class _ExtraInfoScreenState extends State<ExtraInfoScreen> {
                         AppSwitchWidget(
                           label: "Are external elevations in an acceptable condition considering the age of the property?",
                           prefKey: Params.externalElevations,
+                        ),
+                        AppDropdownCommentWidget(
+                          label: "Size in [mm] of largest internal cracks observed as per BRE classification:",
+                          values: Application.SizeLargestInternalCrack,
+                          prefKeyDropdown: Params.sizeLargestInternalCrack,
+                          prefKeyComment: Params.sizeLargestInternalCrackComment,
+                        ),
+                        AppDropdownCommentWidget(
+                          label: "Size in [mm] of largest external wall cracks observed as per BRE classification:",
+                          values: Application.SizeLargestExternalCrack,
+                          prefKeyDropdown: Params.sizeLargestExternalCrack,
+                          prefKeyComment: Params.sizeLargestExternalCrackComment,
                         ),
                         AppCommentWidget(
                           label: "Input any other information/comments:",
