@@ -5,7 +5,6 @@ import 'package:strucreport/config/application.dart';
 import 'package:strucreport/config/params.dart';
 import 'package:strucreport/library/neumorphic/flutter_neumorphic.dart';
 import 'package:strucreport/widget/app_comment_widget.dart';
-import 'package:strucreport/widget/app_dropdown.dart';
 import 'package:strucreport/widget/app_dropdown_comment_widget.dart';
 import 'package:strucreport/widget/app_switch_comment_widget.dart';
 import 'package:strucreport/widget/app_switch_widget.dart';

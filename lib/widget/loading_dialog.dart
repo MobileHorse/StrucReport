@@ -16,7 +16,7 @@ class LoadingDialog {
                       child: Column(children: [
                         CircularProgressIndicator(),
                         SizedBox(height: 10,),
-                        Text("Please Wait....",style: TextStyle(color: Colors.blueAccent, fontSize: 18),)
+                        Text("Generating checklist. Please Wait....",style: TextStyle(color: Colors.blueAccent, fontSize: 18),)
                       ]),
                     )
                   ]));

@@ -82,7 +82,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
                                 height: 20,
                               ),
                               Text(
-                                "Email Checklist(.pdf)",
+                                "Generate Checklist(.pdf)",
                                 style: TextStyle(
                                     color: ColorUtils.textColorByTheme(context),
                                     fontSize: 24),
@@ -135,6 +135,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
   }
 
   Future<void> generateChecklist() async {
+
+    LoadingDialog.showLoadingDialog(context, _keyLoader);
+
     //Create a new PDF document
     final PdfDocument document = PdfDocument();
     PdfPageSettings pageSettings = PdfPageSettings(PdfPageSize.a4);
@@ -195,24 +198,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
         result.page);
 
     result = writeChecklistRegularParagraph(
-        text: "Name of client: ${PreferenceHelper.getString(Params.clientName)}",
-        page: result.page,
-        top: result.bounds.bottom + 20);
-
-    result = writeChecklistRegularParagraph(
-        text: "Project number: ${PreferenceHelper.getString(Params.projectNumber)}",
-        page: result.page,
-        top: result.bounds.bottom + 10);
-
-    result = writeChecklistRegularParagraph(
-        text: "Address: ${PreferenceHelper.getString(Params.address)}",
-        page: result.page,
-        top: result.bounds.bottom + 10);
-
-    result = writeChecklistRegularParagraph(
         text: "Date: ${DateFormat('dd/MM/yyyy').format(PreferenceHelper.getDate(Params.inspectedDate))}",
         page: result.page,
-        top: result.bounds.bottom + 10);
+        top: result.bounds.bottom + 20);
 
     String inspector = StringUtils.naDefaultedValue(param: Params.inspectedBy);
     String secondInspector = PreferenceHelper.getString(Params.inspector2);
@@ -225,34 +213,49 @@ class _PreviewScreenState extends State<PreviewScreen> {
         page: result.page,
         top: result.bounds.bottom + 10);
 
-    String insepctionType = StringUtils.naDefaultedValue(param: Params.inspectionType);
     result = writeChecklistRegularParagraph(
-        text: "Type of inspection: $insepctionType",
+        text: "Project number: ${PreferenceHelper.getString(Params.projectNumber)}",
         page: result.page,
         top: result.bounds.bottom + 10);
-    String inspectionTypeComment = PreferenceHelper.getString(Params.inspectionTypeComment);
-    if (inspectionTypeComment.isNotEmpty) {
+
+    result = writeChecklistRegularParagraph(
+        text: "Client\'s name: ${PreferenceHelper.getString(Params.clientName)}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
+
+    result = writeChecklistRegularParagraph(
+        text: "Address: ${PreferenceHelper.getString(Params.address)}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
+
+    result = writeChecklistRegularParagraph(
+        text: "Specific request to check:",
+        page: result.page,
+        top: result.bounds.bottom + 10);
+    String specificRequestToCheck = PreferenceHelper.getString(Params.specificRequestToCheck);
+    if (specificRequestToCheck.isNotEmpty) {
       result = writeChecklistCommentParagraph(
-          text: inspectionTypeComment,
+          text: "$specificRequestToCheck",
           page: result.page,
           top: result.bounds.bottom + 6);
     }
 
+    String purposeOfSiteVisit = StringUtils.naDefaultedValue(param: Params.purposeOfSiteVisit);
     result = writeChecklistRegularParagraph(
-        text: "Client\'s brief:",
+        text: "Purpose of site visit: $purposeOfSiteVisit",
         page: result.page,
         top: result.bounds.bottom + 10);
-    String clientBrief = PreferenceHelper.getString(Params.clientBrief);
-    if (clientBrief.isNotEmpty) {
+    String purposeOfSiteVisitComment = PreferenceHelper.getString(Params.purposeOfSiteVisitComment);
+    if (purposeOfSiteVisitComment.isNotEmpty) {
       result = writeChecklistCommentParagraph(
-          text: clientBrief,
+          text: purposeOfSiteVisitComment,
           page: result.page,
           top: result.bounds.bottom + 6);
     }
 
     String propertyType = StringUtils.naDefaultedValue(param: Params.propertyType);
     result = writeChecklistRegularParagraph(
-        text: "Property type: $propertyType",
+        text: "Type of property: $propertyType",
         page: result.page,
         top: result.bounds.bottom + 10);
     String propertyTypeComment = PreferenceHelper.getString(Params.propertyTypeComment);
@@ -320,13 +323,25 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "How many rooms/bedrooms: ${StringUtils.naDefaultedValue(param: Params.roomNumber)}",
+        text: "Number of bedrooms: ${StringUtils.naDefaultedValue(param: Params.roomNumber)}",
         page: result.page,
         top: result.bounds.bottom + 10);
     String roomNumberComment = PreferenceHelper.getString(Params.roomNumberComment);
     if (roomNumberComment.isNotEmpty) {
       result = writeChecklistCommentParagraph(
           text: "$roomNumberComment",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
+
+    result = writeChecklistRegularParagraph(
+        text: "Are there any report, drawings or sketches available: ${StringUtils.naDefaultedValue(param: Params.anyReportDrawingsSketchAvailable)}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
+    String anyReportAvailableComment = PreferenceHelper.getString(Params.anyReportDrawingsSketchAvailableComment);
+    if (anyReportAvailableComment.isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "$anyReportAvailableComment",
           page: result.page,
           top: result.bounds.bottom + 6);
     }
@@ -343,17 +358,24 @@ class _PreviewScreenState extends State<PreviewScreen> {
           top: result.bounds.bottom + 6);
     }
 
+    bool isPropertyOnHill = PreferenceHelper.getBool(Params.propertyOnHill);
     result = writeChecklistRegularParagraph(
-        text: "Is the property on a hill, slope, any trees in proximity? : ",
+        text: "Is the property on a hill, slope or are there trees nearby? ${isPropertyOnHill ? "Yes" : "No"}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
-    String propertyOnHillComment = PreferenceHelper.getString(Params.propertyOnHillComment);
-    if (propertyOnHillComment.isNotEmpty) {
-      result = writeChecklistCommentParagraph(
-          text: "$propertyOnHillComment",
+    if (isPropertyOnHill) {
+      result = writeChecklistRegularParagraph(
+          text: "Take overview and close-up photos to illustrate it, provide comments: ",
           page: result.page,
-          top: result.bounds.bottom + 6);
+          top: result.bounds.bottom + 10);
+      String propertyOnHillComment = PreferenceHelper.getString(Params.propertyOnHillComment);
+      if (propertyOnHillComment.isNotEmpty) {
+        result = writeChecklistCommentParagraph(
+            text: "$propertyOnHillComment",
+            page: result.page,
+            top: result.bounds.bottom + 6);
+      }
     }
 
     bool anyChimneyStacks = PreferenceHelper.getBool(Params.anyChimneyStacks);
@@ -508,45 +530,9 @@ class _PreviewScreenState extends State<PreviewScreen> {
         result.page);
 
     result = writeChecklistRegularParagraph(
-        text: "Have you observed any internal cracks 0-3mm? : ${getBool(Params.observedAnyInternalCracksSmaller3mm) ? 'Yes' : 'No'}",
-        page: result.page,
-        top: result.bounds.bottom + 20);
-
-    if (getString(Params.observedAnyInternalCracksSmaller3mmComment).isNotEmpty) {
-      result = writeChecklistCommentParagraph(
-          text: "${getString(Params.observedAnyInternalCracksSmaller3mmComment)}",
-          page: result.page,
-          top: result.bounds.bottom + 6);
-    }
-
-    result = writeChecklistRegularParagraph(
-        text: "Have you observed any cracks larger than 3mm? : ${getBool(Params.observedAnyInternalCracksLager3mm) ? 'Yes' : 'No'}",
-        page: result.page,
-        top: result.bounds.bottom + 10);
-
-    if (getString(Params.observedAnyInternalCracksLager3mmComment).isNotEmpty) {
-      result = writeChecklistCommentParagraph(
-          text: "${getString(Params.observedAnyInternalCracksLager3mmComment)}",
-          page: result.page,
-          top: result.bounds.bottom + 6);
-    }
-
-    result = writeChecklistRegularParagraph(
-        text: "Have you observed any cracks larger than 10mm? : ${getBool(Params.observedAnyInternalCracksLager10mm) ? 'Yes' : 'No'}",
-        page: result.page,
-        top: result.bounds.bottom + 10);
-
-    if (getString(Params.observedAnyInternalCracksLager10mmComment).isNotEmpty) {
-      result = writeChecklistCommentParagraph(
-          text: "${getString(Params.observedAnyInternalCracksLager10mmComment)}",
-          page: result.page,
-          top: result.bounds.bottom + 6);
-    }
-
-    result = writeChecklistRegularParagraph(
         text: "Have you observed defective/cracked mortar joints? : ${getBool(Params.observedDefectiveMortarJoints) ? 'Yes' : 'No'}",
         page: result.page,
-        top: result.bounds.bottom + 10);
+        top: result.bounds.bottom + 20);
 
     if (getString(Params.observedDefectiveMortarJointsComment).isNotEmpty) {
       result = writeChecklistCommentParagraph(
@@ -563,20 +549,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
     if (getString(Params.observedDefectiveBricksComment).isNotEmpty) {
       result = writeChecklistCommentParagraph(
           text: "${getString(Params.observedDefectiveBricksComment)}",
-          page: result.page,
-          top: result.bounds.bottom + 6);
-    }
-
-    String lintelType = StringUtils.naDefaultedValue(param: Params.lintelType);
-    if (lintelType != "N/A") lintelType = lintelType.substring(4);
-    result = writeChecklistRegularParagraph(
-        text: "Type of lintels? : $lintelType",
-        page: result.page,
-        top: result.bounds.bottom + 10);
-
-    if (getString(Params.lintelTypeComment).isNotEmpty) {
-      result = writeChecklistCommentParagraph(
-          text: "${getString(Params.lintelTypeComment)}",
           page: result.page,
           top: result.bounds.bottom + 6);
     }
@@ -682,8 +654,6 @@ class _PreviewScreenState extends State<PreviewScreen> {
         page: result.page,
         top: result.bounds.bottom + 10);
 
-    print("error debug:");
-    print(getString(Params.observedJunctionMovementComment));
     if (getString(Params.observedJunctionMovementComment).isNotEmpty) {
       result = writeChecklistCommentParagraph(
           text: "${getString(Params.observedJunctionMovementComment)}",
@@ -716,7 +686,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     }
 
     result = writeChecklistRegularParagraph(
-        text: "Have you recorded 1min video, taken overview and close-up photos of all defects observed? : ${getBool(Params.recordedVideo) ? 'Yes' : 'No'}",
+        text: "Have you taken overview and close-up photos of all defects observed? : ${getBool(Params.recordedVideo) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
 
@@ -743,6 +713,30 @@ class _PreviewScreenState extends State<PreviewScreen> {
         text: "Are external elevations in an acceptable condition considering the age of the property? : ${getBool(Params.externalElevations) ? 'Yes' : 'No'}",
         page: result.page,
         top: result.bounds.bottom + 10);
+
+    result = writeChecklistRegularParagraph(
+        text: "Size in [mm] of largest internal cracks observed as per BRE classification: ${StringUtils.naDefaultedValue(param: Params.sizeLargestInternalCrack)}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
+
+    if (getString(Params.sizeLargestInternalCrackComment).isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "${getString(Params.sizeLargestInternalCrackComment)}",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
+
+    result = writeChecklistRegularParagraph(
+        text: "Size in [mm] of largest external wall cracks observed as per BRE classification: ${StringUtils.naDefaultedValue(param: Params.sizeLargestExternalCrack)}",
+        page: result.page,
+        top: result.bounds.bottom + 10);
+
+    if (getString(Params.sizeLargestExternalCrackComment).isNotEmpty) {
+      result = writeChecklistCommentParagraph(
+          text: "${getString(Params.sizeLargestExternalCrackComment)}",
+          page: result.page,
+          top: result.bounds.bottom + 6);
+    }
 
     result = writeChecklistRegularParagraph(
         text: "Any other information/comments:",
@@ -790,6 +784,7 @@ class _PreviewScreenState extends State<PreviewScreen> {
     print("========================= PDF created ======================");
     print('$path/$filename');
 
+    Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
     //// Email Send
     /*final Email email = Email(
       body: "StrucChecklist",
