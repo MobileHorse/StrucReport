@@ -4,14 +4,14 @@ class FileUtils {
   static Future<Directory> getProjectDirectory(String projectNumber) async {
     Directory rootDir, projectDir;
     try {
-      rootDir = new Directory('/storage/emulated/0/StrucReport');
+      rootDir = new Directory('/storage/emulated/0/StrucChecklist');
       if (!(await rootDir.exists())) {
         await rootDir.create(recursive: true);
       }
       print("----------- in Try -----------");
     } catch (e) {
       print("----------- in Catch -----------");
-      rootDir = new Directory('/storage/emulated/0/StrucReport');
+      rootDir = new Directory('/storage/emulated/0/StrucChecklist');
       if (!(await rootDir.exists())) {
         await rootDir.create(recursive: true);
       }

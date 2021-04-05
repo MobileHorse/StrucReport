@@ -142,6 +142,7 @@ class _ExtraInfoScreenState extends State<ExtraInfoScreen> {
                         AppCommentWidget(
                           label: "Input any other information/comments:",
                           prefKey: Params.otherInformation,
+                          maxLines: 9,
                         ),
                       ],
                     ),
